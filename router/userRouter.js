@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {postUser, getUser,putUser, deleteUser,getUserById} = require('../handler/userHandler')
-const joiSchema = require('../validation/user')
+const joiSchema = require('../validation')
 const joiExpress = require('@escook/express-joi')
 
 // 获取指定id用户
