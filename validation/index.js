@@ -8,6 +8,7 @@ const forLoginOrRegister = {
 }
 const forPagination = {
     body:{
+        query:field.query,
         page_size:field.page_size,
         page_num:field.page_num
     }

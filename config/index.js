@@ -9,7 +9,7 @@ const jwtConfig = {
         expiresIn:'1day'
     },
     unlessPath:{
-        path:[/login$/,/register$/]
+        path:[/login$/,/register$/,/.png$/,/.jpg$/]
     }
 }
 module.exports ={

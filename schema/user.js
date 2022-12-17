@@ -28,9 +28,9 @@ const userSchema = new Schema({
     },
     apply_supplies:Array,
     apply_ration:Array,
-    type:{
-        type:Number,
-        default: 1
+    avatar:{
+        type:String,
+        default:''
     },
     is_delete:{
         type:Boolean,

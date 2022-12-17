@@ -11,6 +11,7 @@ mongoose.set('strictQuery',true)
 // 导入路由
 const userRouter = require('./router/userRouter')
 const loginRouter = require('./router/loginRouter')
+const uploadRouter = require('./router/uploadRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -20,6 +21,8 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 // 验证和解析token
 app.use(expressjwt({secret:jwtConfig.secret,algorithms:['HS256']}).unless(jwtConfig.unlessPath))
+// 托管公共目录资源
+app.use(express.static('public'))
 
 // 连接MongoDB数据库
 const url = `mongodb://${db_info.host}:${db_info.port}/${db_info.db}`
@@ -42,6 +45,7 @@ app.use((req,res,next) => {
 // 处理路由
 app.use('/api/user',userRouter)
 app.use('/api/login',loginRouter)
+app.use('/api/upload',uploadRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {

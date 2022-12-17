@@ -4,7 +4,6 @@ const joiExpress = require('@escook/express-joi')
 const joiSchema = require('../validation')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const {request} = require("express");
 const loginRouter = express.Router()
 const {jwtConfig} = require('../config')
 loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {

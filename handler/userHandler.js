@@ -26,8 +26,20 @@ const getUserById = (req,res) => {
 }
 const getUser = (req,res) => {
     const skipNumber = (req.body.page_num -1)*req.body.page_size
-    userModule.find({is_delete:false}).select('-password').skip(skipNumber).limit(req.body.page_size).then(async result => {
-        const count = await userModule.countDocuments({is_delete:false})
+    // 获取模糊查询关键字
+    const keyWord = req.body.query?req.body.query:''
+    // 过滤条件
+    const filter = {
+        is_delete:false,
+        $or:[
+            {real_name:{$regex: keyWord}},
+            {phone:{$regex: keyWord}},
+            {username:{$regex: keyWord}}
+        ]
+    }
+    userModule.find(filter).select('-password').skip(skipNumber).limit(req.body.page_size).then(async result => {
+        // const count = await userModule.countDocuments(filter)
+        const count = result.length
         res.out('获取用户成功',200,{users:result,total:count})
     }).catch(err => {
         res.out('获取用户信息失败',400,err)
