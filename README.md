@@ -50,7 +50,7 @@
 >| ration | Number | 用户配额 | 10
 >| apply_supplies | Array | 申请物资id数组 | [ ]
 >| apply_ration | Array | 申请变更配额id数组 | [ ]
->| type | Number | 用户权限组 | 1
+>| avatar | String | 用户头像url | 空字符串
 >| is_delete | Boolean | 用户软删除 | false
 >| create_time | Date | 用户创建时间 | Date.now()
 
@@ -61,14 +61,13 @@
     "status": 201,
     "data": {
         "username": "erxeuxa",
-        "password": "cxddzeuusg",
         "real_name": "",
         "address": "",
         "phone": "",
         "ration": 10,
         "apply_supplies": [],
         "apply_ration": [],
-        "type": 1,
+        "avatar": '',
         "is_delete": false,
         "create_time": "2022-12-15T14:35:35.124Z",
         "_id": "639b30d7d1e62ddb892b4ff1"
@@ -78,9 +77,11 @@
 ---
 ### 1.2 获取用户数据
 请求方式 `GET`   请求路径 `user`  
+说明:模糊查询支持查询真实姓名,用户名或手机号
 > 请求参数
 > | 参数名 | 参数类型 | 可否为空 | 备注 |   
 > | --- | --- | --- | --- |
+> | query | String | yes | 模糊查询关键字
 > | page_num | Number | no | 分页页码
 > | page_size | Number | no | 分页大小  
 
@@ -122,14 +123,13 @@
     "status": 200,
     "data": {
         "username": "erxeuxa",
-        "password": "cxddzeuusg",
         "real_name": "",
         "address": "",
         "phone": "",
         "ration": 10,
         "apply_supplies": [],
         "apply_ration": [],
-        "type": 1,
+        "avatar": '',
         "is_delete": false,
         "create_time": "2022-12-15T14:35:35.124Z",
         "_id": "639b30d7d1e62ddb892b4ff1"
@@ -148,6 +148,7 @@
 > | real_name | String | yes|真实姓名 
 > | address | String | yes|地址 
 > | phone | String | yes|手机号码 
+> | avatar | String | yes | 空字符串
 > | is_delete | String | yes | 标志用户被删除
 
 > 响应参数  
@@ -162,14 +163,13 @@
     "data": {
         "_id": "639b277896b410885dc9ade5",
         "username": "lqghrd",
-        "password": "esysyhutvpkc",
         "real_name": "卢勇",
         "address": "浙江省 湖州市",
         "phone": "18124412776",
         "ration": 10,
         "apply_supplies": [],
         "apply_ration": [],
-        "type": 1,
+        "avatar": '',
         "is_delete": true,
         "create_time": "2022-12-15T13:55:52.796Z"
     }
@@ -205,7 +205,7 @@
 ### 1.6 批量删除用户
 请求方式 `DELETE`
 请求路径 `user`
-说明:用于批量删除已标记用户字段is_delete为true的用户数据   
+说明:用于批量删除已标记用户字段is_delete为true的用户数据
 此举将永久将用户从数据库中移除
 > 请求参数
 > 无
