@@ -12,6 +12,7 @@ mongoose.set('strictQuery',true)
 const userRouter = require('./router/userRouter')
 const loginRouter = require('./router/loginRouter')
 const uploadRouter = require('./router/uploadRouter')
+const cateRouter = require('./router/cateRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -46,17 +47,18 @@ app.use((req,res,next) => {
 app.use('/api/user',userRouter)
 app.use('/api/login',loginRouter)
 app.use('/api/upload',uploadRouter)
+app.use('/api/categories',cateRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {
     if(err){
-        if(err.message === 'No authorization token was found'){
+        if(err.message === 'No authorization token was found' || err.message === 'jwt expired'){
             return res.send({msg:'无效的Token或Token已过期',status:401})
         }
         if(err instanceof joi.ValidationError){
             return res.send({msg:err.message,status:400})
         }
-        return res.status(500).json({msg:'服务器未知错误',err:err.message})
+        return res.status(500).json({msg:'服务器未知错误',err})
     }
 })
 

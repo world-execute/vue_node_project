@@ -19,7 +19,7 @@ loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
             const playload ={}
             playload.username = result.username
             playload.type = result.type
-            const token = jwt.sign(playload,jwtConfig.secret,jwtConfig.option)
+            const token = 'Bearer '+jwt.sign(playload,jwtConfig.secret,jwtConfig.option)
             result.password = undefined
             return res.out('登录成功',200,{user:result,token})
         }

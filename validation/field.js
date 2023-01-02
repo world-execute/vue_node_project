@@ -8,5 +8,6 @@ fields.id = joi.string().required().messages(getErrMessage('ID'))
 fields.page_num = joi.number().required().messages(getErrMessage('当前页码'))
 fields.page_size = joi.number().required().messages(getErrMessage('页面大小'))
 fields.query = joi.string().messages(getErrMessage('查询参数'))
+fields.name = joi.string().required().messages(getErrMessage('名称'))
 
 module.exports = fields
