@@ -1,4 +1,5 @@
 const field = require('../validation/field')
+const {trace} = require("joi");
 
 const forLoginOrRegister = {
     body:{
@@ -14,7 +15,25 @@ const forPagination = {
     }
 }
 
+const changeMater = {
+    body:{
+        name:field.name,
+        quantity:field.quantity,
+        price:field.price,
+        type:field.type,
+        threshold:field.threshold
+    }
+}
+
+const changeCate = {
+    body:{
+        name:field.name
+    }
+}
+
 module.exports = joiSchema = {
     forLoginOrRegister,
-    forPagination
+    forPagination,
+    changeMater,
+    changeCate
 }

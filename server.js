@@ -13,6 +13,7 @@ const userRouter = require('./router/userRouter')
 const loginRouter = require('./router/loginRouter')
 const uploadRouter = require('./router/uploadRouter')
 const cateRouter = require('./router/cateRouter')
+const materialRouter = require('./router/materialRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -48,6 +49,7 @@ app.use('/api/user',userRouter)
 app.use('/api/login',loginRouter)
 app.use('/api/upload',uploadRouter)
 app.use('/api/categories',cateRouter)
+app.use('/api/material',materialRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {
@@ -58,7 +60,7 @@ app.use((err,req,res,next) => {
         if(err instanceof joi.ValidationError){
             return res.send({msg:err.message,status:400})
         }
-        return res.status(500).json({msg:'服务器未知错误',err})
+        return res.status(500).json({msg:'服务器未知错误',err:err.message})
     }
 })
 

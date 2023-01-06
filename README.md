@@ -28,6 +28,7 @@
 >| 401 | 用户身份验证失败 |
 >| 403 | 理解请求,但是没有执行 |
 >| 500 | 服务器内部错误 |
+---
 ## 1 用户接口
 ---
 ### 1.1 新增用户
@@ -228,4 +229,196 @@
 }
 ```
 ---
+## 2 物资分类接口
+---
+### 2.1 新增物资分类
+请求方式 `POST` 请求路径 `categories`
+说明:用于新增父级分类时可以只传递参数name,但新增子级分类时, 需要传递参数name,level,pid,且level为1,pid为该子级分类的父级id
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| name | String | no |分类名称
+>| level | String | yes |分类等级 | 0(代表了父类)
+>| pid | String | yes |父级分类id 
 
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 新建分类的信息
+
+响应示例
+``` js
+{
+    "msg": "创建分类成功",
+    "status": 201,
+    "data": {
+        "name": "食品",
+        "level": 0,
+        "_id": "63b6d66ec1e003b9e7651ac6"
+    }
+}
+```
+---
+### 2.2 获取分类数据
+请求方式 `GET` 请求路径 `categories`   
+说明:支持分类名称模糊查询,只需要传递query参数,不传递时返回所有分类,子分类将会自动包含在父分类的children对象中,以数组的形式保存
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| query | String | yes | 用于查询分类名称
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 获取分类的信息
+>| name | String |分类名称
+>| level | String |分类等级 | 0(代表了父类)
+>| pid | String |父级分类id 
+>| children | Array | 子级分类数据
+
+响应示例
+``` js
+{
+    "msg": "ok",
+    "status": 200,
+    "data": [
+        {
+            "_id": "63b1a10c0f4eb87f77441129",
+            "name": "药品",
+            "level": 0,
+            "children": [
+                {
+                    "_id": "63b2f2cabd7c9300636bd500",
+                    "name": "退烧药",
+                    "level": 1,
+                    "pid": "63b1a10c0f4eb87f77441129"
+                },
+                {
+                    "_id": "63b2f2cfbd7c9300636bd502",
+                    "name": "感冒药",
+                    "level": 1,
+                    "pid": "63b1a10c0f4eb87f77441129"
+                }
+            ]
+        },
+        {
+            "_id": "63b2f21cbd7c9300636bd4f4",
+            "name": "日用品",
+            "level": 0,
+            "children": [
+                {
+                    "_id": "63b2f315bd7c9300636bd506",
+                    "name": "洗漱用品",
+                    "level": 1,
+                    "pid": "63b2f21cbd7c9300636bd4f4"
+                }
+            ]
+        }
+    ]
+}
+```
+### 2.3 修改指定ID的分类信息
+请求方式 `PUT` 请求路径 `categories`   
+说明:只可以修改分类名称
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 修改分类的id,包含在URL中
+>| name | String | no | 分类名称
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 获取分类的信息
+
+响应示例
+``` js
+{
+    "msg": "修改分类成功",
+    "status": 201,
+    "data": {
+        "_id": "63b2f19c42102293782b2a3a",
+        "name": "食品",
+        "level": 0
+    }
+}
+```
+---
+### 2.4 删除指定ID的分类
+请求方式 `DELETE` 请求路径 `categories`   
+说明:当删除的分类是一个父级分类时,其子级分类都将被删除
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 删除分类的id,包含在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+
+响应示例
+``` js
+{
+    "msg": "删除分类成功",
+    "status": 200,
+    "data": {
+        "_id": "63b2f276bd7c9300636bd4f6",
+        "name": "罐头",
+        "level": 1,
+        "pid": "63b2f19c42102293782b2a3a"
+    }
+}
+```
+---
+## 物资接口
+---
+### 2.1 新增物资
+请求方式 `POST` 请求路径 `material`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>|name | String | no | 物资名称
+>|quantity| NUmber | no | 物资数量
+>|price| Number | no | 物资单价
+>|type| String | no | 物资类别(对应分类的id)
+>|threshold| Number | no | 物资阈值
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+>|name | String | 物资名称
+>|quantity| NUmber | 物资数量
+>|price| Number  | 物资单价
+>|type| String  | 物资类别(对应分类的id)
+>|threshold| Number  | 物资阈值
+>|change_time|String | 物资修改时间(包含第一次创建)
+
+响应示例
+``` js
+{
+    "msg": "物资创建成功",
+    "status": 201,
+    "data": {
+        "name": "土豆",
+        "quantity": 200,
+        "price": 6,
+        "type": "63b2f298bd7c9300636bd4fa",
+        "threshold": 100,
+        "change_time": "2023-01-05T14:38:01.120Z",
+        "_id": "63b6e292885955107f819696"
+    }
+}
+```
