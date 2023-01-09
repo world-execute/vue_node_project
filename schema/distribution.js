@@ -13,15 +13,15 @@ const distributionSchema = new Schema({
     },
     status:{
         type:Number,
-        required: true
+        default: 0
     },
     is_accept:{
         type:Boolean,
-        required:true
+        default:false
     },
     create_time:{
         type:Date,
-        default:Date.now()
+        default:Date.now
     }
 },{versionKey:false})
 // 导出模型名 distributionModule

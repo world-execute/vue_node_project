@@ -25,7 +25,7 @@ const materialSchema = new Schema({
     },
     change_time:{
         type:Date,
-        default:Date.now()
+        default:Date.now
     }
 },{versionKey:false})
 // 导出模型名 materialModule

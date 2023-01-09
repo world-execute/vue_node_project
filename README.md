@@ -32,7 +32,7 @@
 ## 1 用户接口
 ---
 ### 1.1 新增用户
-请求方法 `POST`  请求路径 `user`   
+请求方法 <span style="color:#FF8C00">POST</span> 请求路径 `user`   
 >请求参数   
 >| 参数名 | 参数类型 | 可否为空 | 备注 |   
 >| --- | --- | --- | --- |
@@ -77,7 +77,7 @@
 ```
 ---
 ### 1.2 获取用户数据
-请求方式 `GET`   请求路径 `user`  
+请求方式 <span style="color:#00FF00">GET</span> 请求路径 `user`  
 说明:模糊查询支持查询真实姓名,用户名或手机号
 > 请求参数
 > | 参数名 | 参数类型 | 可否为空 | 备注 |   
@@ -107,7 +107,7 @@
 ```
 ---
 ### 1.3 获取指定ID用户
-请求方式 `GET`
+请求方式 <span style="color:#00FF00">GET</span> 
 请求路径 `user/:id`
 > 请求参数
 > | 参数名 | 参数类型 | 可否为空 | 备注 |   
@@ -139,7 +139,7 @@
 ```
 ---
 ### 1.4 修改用户信息
-请求方式 `PUT`
+请求方式  <span style="color:#00BFFF">PUT</span> 
 请求路径 `user/:id`  
 说明:该接口只能用于修改用户部分数据,且使用ID寻找用户,用于完善用户信息,或设置用户字段is_delete为true以删除用户
 > 请求参数
@@ -177,7 +177,7 @@
 }
 ```
 ### 1.5 永久删除用户
-请求方式 `DELETE`
+请求方式  <span style="color:#DC143C">DELETE</span> 
 请求路径 `user/:id`  
 说明:此举将用户永久从数据库中移除,无法恢复,业务中应先考虑使用软删除,即修改用户is_delete字段为true
 > 请求参数
@@ -204,8 +204,8 @@
 ```
 ---
 ### 1.6 批量删除用户
-请求方式 `DELETE`
-请求路径 `user`
+请求方式  <span style="color:#DC143C">DELETE</span> 
+请求路径 `user`   
 说明:用于批量删除已标记用户字段is_delete为true的用户数据
 此举将永久将用户从数据库中移除
 > 请求参数
@@ -232,7 +232,7 @@
 ## 2 物资分类接口
 ---
 ### 2.1 新增物资分类
-请求方式 `POST` 请求路径 `categories`
+请求方式 <span style="color:#FF8C00">POST</span> 请求路径 `categories`   
 说明:用于新增父级分类时可以只传递参数name,但新增子级分类时, 需要传递参数name,level,pid,且level为1,pid为该子级分类的父级id
 > 请求参数
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
@@ -262,7 +262,7 @@
 ```
 ---
 ### 2.2 获取分类数据
-请求方式 `GET` 请求路径 `categories`   
+请求方式  <span style="color:#00FF00">GET</span>  请求路径 `categories`   
 说明:支持分类名称模糊查询,只需要传递query参数,不传递时返回所有分类,子分类将会自动包含在父分类的children对象中,以数组的形式保存
 > 请求参数
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
@@ -322,7 +322,7 @@
 }
 ```
 ### 2.3 修改指定ID的分类信息
-请求方式 `PUT` 请求路径 `categories`   
+请求方式  <span style="color:#00BFFF">PUT</span>  请求路径 `categories`   
 说明:只可以修改分类名称
 > 请求参数
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
@@ -351,7 +351,7 @@
 ```
 ---
 ### 2.4 删除指定ID的分类
-请求方式 `DELETE` 请求路径 `categories`   
+请求方式 <span style="color:#DC143C">DELETE</span>  请求路径 `categories`   
 说明:当删除的分类是一个父级分类时,其子级分类都将被删除
 > 请求参数
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
@@ -379,10 +379,10 @@
 }
 ```
 ---
-## 物资接口
+## 3 物资接口
 ---
-### 2.1 新增物资
-请求方式 `POST` 请求路径 `material`   
+### 3.1 新增物资
+请求方式 <span style="color:#FF8C00">POST</span> 请求路径 `material`   
 说明:
 > 请求参数
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
@@ -422,3 +422,343 @@
     }
 }
 ```
+---
+### 3.2 获取物资信息
+请求方式 <span style="color:#00FF00">GET</span>  请求路径 `material`   
+说明: 使用分页参数保证数据传输量可控,支持模糊查询物资名称
+使用url参数的形式,还可以传入分类的id,返回属于该分类的物资信息,传入lower,无论值为多少,都认为需要返回低于物资数量阈值的物资信息.
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+> | page_num | Number | no | 分页页码
+> | page_size | Number | no | 分页大小  
+> | query | String | yes | 模糊查询关键字,使用URL参数
+> | type | String | yes | 根据分类id返回物资信息,使用url参数
+> | lower | any | yes | 返回低于阈值的物资信息,使用URL参数
+> |sort | String | yes | 按照时间新旧排序,值为 `old` 或 `new` ,使用url参数
+
+请求示例
+
+>| 作用 | URL地址 | 
+>| --- | --- |
+>| 获取指定分类的物资 | api/material?type=63b2f298bd7c9300636bd4fa |
+>| 按时间从新到旧排序 | api/material?sort=new
+>| 获取物资数量低于阈值的物资信息 | api/material?lower=1
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+
+响应示例
+``` js
+{
+    "msg": "获取物资信息成功",
+    "status": 200,
+    "data": [
+        {
+            "_id": "63b6e292885955107f819696",
+            "name": "土豆",
+            "quantity": 200,
+            "price": 6,
+            "type": {
+                "_id": "63b2f298bd7c9300636bd4fa",
+                "name": "蔬菜",
+                "level": 1,
+                "pid": "63b2f19c42102293782b2a3a"
+            },
+            "threshold": 100,
+            "change_time": "2023-01-05T14:38:01.120Z"
+        },
+        {
+            "_id": "63b2f90af658a9b35825144a",
+            "name": "西红柿",
+            "quantity": 50,
+            "price": 6,
+            "type": {
+                "_id": "63b2f298bd7c9300636bd4fa",
+                "name": "蔬菜",
+                "level": 1,
+                "pid": "63b2f19c42102293782b2a3a"
+            },
+            "threshold": 100,
+            "change_time": "2023-01-05T13:38:27.312Z"
+        }
+    ]
+}
+```
+---
+### 3.3 修改物资信息
+请求方式  <span style="color:#00BFFF">PUT</span>  请求路径 `material/:id`   
+说明:用于修改物资的全部信息,包括分类,且每次修改物资信息都会获取最新是时间保存在change_time字段
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 物资id,放置在URL中
+>|name | String | no | 物资名称
+>|quantity| NUmber | no | 物资数量
+>|price| Number | no | 物资单价
+>|type| String | no | 物资类别(对应分类的id)
+>|threshold| Number | no | 物资阈值
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 修改后的物资的信息
+
+响应示例
+``` js
+{
+    "msg": "更新物资信息成功",
+    "status": 201,
+    "data": {
+        "_id": "63b2f90af658a9b35825144a",
+        "name": "西红柿",
+        "quantity": 500,
+        "price": 6,
+        "type": "63b2f298bd7c9300636bd4fa",
+        "threshold": 100,
+        "change_time": "2023-01-07T12:16:50.119Z"
+    }
+}
+```
+---
+### 3.4 删除物资信息
+请求方式  <span style="color:#DC143C">DELETE</span>  请求路径 `material/:id`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 物资id,放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除后的物资的信息
+
+响应示例 
+``` js
+{
+    "msg": "删除物资信息成功",
+    "status": 201,
+    "data": {
+        "_id": "63b2f90af658a9b35825144a",
+        "name": "西红柿",
+        "quantity": 500,
+        "price": 6,
+        "type": "63b2f298bd7c9300636bd4fa",
+        "threshold": 100,
+        "change_time": "2023-01-07T12:16:50.119Z"
+    }
+}
+```
+---
+## 4 物资配送表接口
+### 4.1 新增物资配送表接口, 
+请求方式 <span style="color:#FF8C00">POST</span> 请求路径 `distribution`   
+说明:数据库字段status代表了配送情况,物资信息使用表单数据,由于无法传值数组,所以将数组序列化成元素用 ','间隔的字符串
+数据库字段supplies_info其实由supplies_name(物资名称)和supplies_quantities(物资数量)组合而来
+>字段status含义
+>| 数字 | 含义 |
+>|---|---|
+>| 0 | 正在审批 | 
+>| 1 | 准备物资 | 
+>| 2 | 正在配送 | 
+>| 3 | 配送完成 |
+
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| user_id | String | no | 用户id
+>| supplies_names | String | no |物资名称,彼此间用","间隔
+>| supplies_quantities | String | no |物资数量,彼此间用 ","间隔
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码 
+>| data | Object | 新增的物资配送表信息
+>| _id | String | 物资配送表id
+>| supplies_info | Array | 物资信息 
+>| is_accept | Boolean | 是否批准 | false
+>| status | String | 物资配送情况 | 0
+
+响应示例
+``` js
+{
+    "msg": "创建物资配送表成功",
+    "status": 200,
+    "data": {
+        "user_id": "639d58819ee3fb7390b20f5a",
+        "supplies_info": [
+            {
+                "name": "芹菜",
+                "quantity": "30"
+            },
+            {
+                "name": "西红柿",
+                "quantity": "20"
+            },
+            {
+                "name": "白菜",
+                "quantity": "40"
+            }
+        ],
+        "status": 0,
+        "is_accept": false,
+        "_id": "63bc1d5fd79cfb7937a9ddca",
+        "create_time": "2023-01-09T13:57:51.241Z"
+    }
+}
+```
+---
+### 4.2 获取物资配送表信息
+请求方式 <span style="color:#00FF00">GET</span> 
+ 请求路径 `distribution`   
+说明:通过联合查询返回的物资配送表会包含用户信息
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| page_num | String | no | 分页页码
+>| page_size | String | no | 分页大小
+>| query | String | yes | 查询用户然后返回第一个用户的物资配送表信息
+>| user_id | String | yes | 通过用户id精准查询该用户的物资配送表信息,使用URL参数形式
+>| accept | String | yes | 获取批准或不批准的物资配送表数据,可取值为 true(批准)\false(不批准),使用URL参数形式
+>| status | String | yes | 获取特定状态的物资配送表数据,使用URL参数形式
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 |
+>| --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+
+响应示例
+``` js
+{
+    "msg": "获取物资配送表成功",
+    "status": 201,
+    "data": [
+        {
+            "_id": "63bc1d5fd79cfb7937a9ddca",
+            "user_id": {
+                "_id": "639d58819ee3fb7390b20f5a",
+                "username": "yirsgz",
+                "real_name": "张三",
+                "address": "",
+                "phone": "",
+                "ration": 10,
+                "avatar": "",
+                "is_delete": false,
+                "create_time": "2022-12-17T05:49:45.268Z"
+            },
+            "supplies_info": [
+                {
+                    "name": "芹菜",
+                    "quantity": "30"
+                },
+                {
+                    "name": "西红柿",
+                    "quantity": "20"
+                },
+                {
+                    "name": "白菜",
+                    "quantity": "40"
+                }
+            ],
+            "status": 0,
+            "is_accept": false,
+            "create_time": "2023-01-09T13:57:51.241Z"
+        }
+    ]
+}
+```
+### 4.3 修改物资配送表信息
+请求方式  <span style="color:#00BFFF">PUT</span> 
+请求路径 `distribution`   
+
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 放置在URL中
+>| status | String | yes |物资配送状态
+>| is_accept | String | yes |是否批准
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 修改后的物资分配表信息
+
+响应示例
+``` js
+{
+    "msg": "修改物资配送表成功",
+    "status": 200,
+    "data": {
+        "_id": "63baae9efb0b344feae50a94",
+        "user_id": "639d58819ee3fb7390b20f5a",
+        "supplies_info": [
+            {
+                "name": "苹果",
+                "quantity": "10"
+            },
+            {
+                "name": "香蕉",
+                "quantity": "20"
+            }
+        ],
+        "status": 2,
+        "is_accept": true,
+        "create_time": "2023-01-08T11:52:54.042Z"
+    }
+}
+```
+### 4.4 删除物资配送表信息
+请求方式  <span style="color:#DC143C">DELETE</span>  
+请求路径 `distribution`   
+
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注  
+>| --- | --- | --- |   
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+
+响应示例
+``` js
+{
+    "msg": "删除物资配送表成功",
+    "status": 200,
+    "data": {
+        "_id": "63baae9efb0b344feae50a94",
+        "user_id": "639d58819ee3fb7390b20f5a",
+        "supplies_info": [
+            {
+                "name": "苹果",
+                "quantity": "10"
+            },
+            {
+                "name": "香蕉",
+                "quantity": "20"
+            }
+        ],
+        "status": 2,
+        "is_accept": true,
+        "create_time": "2023-01-08T11:52:54.042Z"
+    }
+}
+```
+---

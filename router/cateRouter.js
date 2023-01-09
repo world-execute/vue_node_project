@@ -3,6 +3,7 @@ const {postCate, getCate, deleteCate, putCate} = require('../handler/cateHandler
 const cateRouter = express.Router()
 const joiSchema = require('../validation')
 const joiExpress = require('@escook/express-joi')
+const checkID = require('../util/checkID')
 
 cateRouter.post('/',(req,res,next) => {
     // 自定义数据验证
@@ -18,7 +19,7 @@ cateRouter.post('/',(req,res,next) => {
 },joiExpress(joiSchema.changeCate,{strict:true}),postCate)
 
 cateRouter.get('/',getCate)
-cateRouter.put('/:id',joiExpress(joiSchema.changeCate,{strict:true}),putCate)
-cateRouter.delete('/:id',deleteCate)
+cateRouter.put('/:id',joiExpress(joiSchema.changeCate,{strict:true}),checkID,putCate)
+cateRouter.delete('/:id',checkID,deleteCate)
 
 module.exports = cateRouter

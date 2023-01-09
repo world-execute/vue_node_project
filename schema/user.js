@@ -26,8 +26,6 @@ const userSchema = new Schema({
         type:Number,
         default:10
     },
-    apply_supplies:Array,
-    apply_ration:Array,
     avatar:{
         type:String,
         default:''
@@ -38,7 +36,7 @@ const userSchema = new Schema({
     },
     create_time:{
         type:Date,
-        default:Date.now()
+        default:Date.now
     }
 },{versionKey:false})
 // 导出模型名 userModule

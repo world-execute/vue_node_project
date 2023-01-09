@@ -31,9 +31,18 @@ const changeCate = {
     }
 }
 
+const changeDist = {
+    body:{
+        user_id:field.user_id,
+        supplies_names:field.supplies_names,
+        supplies_quantities:field.supplies_quantities
+    }
+}
+
 module.exports = joiSchema = {
     forLoginOrRegister,
     forPagination,
     changeMater,
-    changeCate
+    changeCate,
+    changeDist
 }
