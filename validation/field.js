@@ -16,5 +16,7 @@ fields.threshold = joi.number().required().messages(getErrMessage('阈值'))
 fields.user_id = joi.string().required().messages(getErrMessage('用户ID'))
 fields.supplies_names = joi.string().required().messages(getErrMessage('物资名称组'))
 fields.supplies_quantities = joi.string().required().messages(getErrMessage('物资数量组'))
+fields.recipient = joi.string().required().messages(getErrMessage('手机号或邮箱'))
+fields.code = joi.string().required().messages(getErrMessage('验证码'))
 
 module.exports = fields

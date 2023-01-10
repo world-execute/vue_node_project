@@ -762,3 +762,58 @@
 }
 ```
 ---
+## 5 配额申请表接口
+---
+## 6 验证码发送与校验接口
+### 6.1 发送验证码
+请求方式  <span style="color:#FF8C00">POST</span> 
+请求路径 `lost-pwd/send`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| recipient | String | no | 手机号码或邮箱
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| recipient | String | 手机号码或邮箱回显
+
+响应示例
+``` js
+{
+    "msg": "验证码发送成功",
+    "data": {
+        "recipient": "17395026862"
+    }
+}
+```
+---
+### 6.2 校验验证码
+请求方式  <span style="color:#FF8C00">POST</span> 
+请求路径 `lost-pwd/send`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| recipient | String | no | 手机号码或邮箱
+>| code | String | no | 验证码
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| auth | Boolean | 校验结果,通过为true,否则为false
+
+响应示例
+``` js
+{
+    "msg": "验证码正确",
+    "data": {
+        "auth": true
+    }
+}
+```
+---
+## 7 图像上传接口

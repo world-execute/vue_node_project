@@ -39,10 +39,25 @@ const changeDist = {
     }
 }
 
+const sendCode = {
+    body:{
+        recipient:field.recipient
+    }
+}
+
+const checkCode = {
+    body:{
+        recipient:field.recipient,
+        code:field.code
+    }
+}
+
 module.exports = joiSchema = {
     forLoginOrRegister,
     forPagination,
     changeMater,
     changeCate,
-    changeDist
+    changeDist,
+    sendCode,
+    checkCode
 }

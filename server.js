@@ -16,6 +16,7 @@ const uploadRouter = require('./router/uploadRouter')
 const cateRouter = require('./router/cateRouter')
 const materialRouter = require('./router/materialRouter')
 const distributionRouter = require('./router/distributionRouter')
+const lostPwdRouter = require('./router/lostPwdRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -43,9 +44,8 @@ app.use((req,res,next) => {
         if(data && (data.length === 0)){
             msg = '没有获取到相关数据'
         }
-        res.send({
+        res.status(status).send({
             msg,
-            status,
             data
         })
     }
@@ -58,6 +58,7 @@ app.use('/api/upload',uploadRouter)
 app.use('/api/categories',cateRouter)
 app.use('/api/material',materialRouter)
 app.use('/api/distribution',distributionRouter)
+app.use('/api/lost-pwd',lostPwdRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {

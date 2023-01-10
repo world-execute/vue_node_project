@@ -48,6 +48,10 @@ const getUser = (req,res) => {
 
 const putUser = (req,res) => {
     const update = {...req.body}
+    if(update.password){
+        // 加密用户密码
+        update.password = bcrypt.hashSync(update.password,8)
+    }
     userModule.findByIdAndUpdate({_id:req.params.id},update,{new:true}).select('-password').then(result => {
         res.out('修改用户成功',201,result)
     }).catch(err => {
