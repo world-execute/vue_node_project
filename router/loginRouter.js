@@ -9,8 +9,8 @@ const {jwtConfig} = require('../config')
 loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
     const body = {...req.body}
     userModule.findOne({username:body.username}).then(result =>{
-        if(result === null){
-            return res.out('用户不存在',403)
+        if(result === null || result.is_delete === true){
+            return res.out('用户不存在',404)
         }
         const apply = bcrypt.compareSync(body.password,result.password)
         if(apply){

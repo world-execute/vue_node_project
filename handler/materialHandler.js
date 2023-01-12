@@ -40,11 +40,11 @@ const getMater = (req,res) => {
         "$where":checkThreshold
     }
     if(type && !isValidObjectId(type)){
-        return res.out('分类id格式不正确',400)
+        return res.out('分类id格式不正确',422)
     }else if (type){
         filter.type=type
     }
-    materialModule.find(filter).populate('type')
+    materialModule.find(filter).populate('type').populate('charge_unit')
         .skip(skipNumber).limit(req.body.page_size).sort(sort_info).then(result => {
             res.out('获取物资信息成功',200,result)
     }).catch(err => {
@@ -64,7 +64,7 @@ const putMater = (req,res) => {
 
 const deleteMater = (req,res) => {
     materialModule.findByIdAndDelete(req.params.id).then(result => {
-        res.out('删除物资信息成功',201,result)
+        res.out('删除物资信息成功',204,result)
     }).catch(err => {
         res.out('删除物资信息失败',400,err)
     })

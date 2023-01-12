@@ -19,6 +19,10 @@ const materialSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'categories'
     },
+    charge_unit:{
+        type:Schema.Types.ObjectId,
+        ref:'charge_unit'
+    },
     threshold:{
         type:Number,
         required:true

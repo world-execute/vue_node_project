@@ -17,9 +17,9 @@ router.post('/',upload.single('file'),(req, res) => {
     let imageUrl = baseUrl+'avatar/'+imageName
     fs.rename(req.file.path,path.join('public/avatar',imageName),err => {
         if(err){
-            return res.send('上传失败')
+            return res.out('上传出错',400,err)
         }
-        res.send({status:'ok',imageUrl})
+        res.out('上传成功',200,{imageName,imageUrl})
     })
 
 })

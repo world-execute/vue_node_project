@@ -65,7 +65,7 @@ const deleteUser = (req,res) => {
     if(req.params.id){
         userModule.deleteOne({_id:req.params.id}).then(result => {
             if(result.deletedCount === 0){
-                return res.out('没有符合删除条件的数据',403)
+                return res.out('没有符合删除条件的数据',404)
             }
             res.out('永久删除成功',201,{deletedCount:result.deletedCount})
         }).catch(err => {
@@ -75,7 +75,7 @@ const deleteUser = (req,res) => {
         // 不存在id信息,直接删除全部符合条件的数据
         userModule.deleteMany({is_delete:true}).then(result => {
             if(result.deletedCount === 0){
-                return res.out('没有符合删除条件的数据',403)
+                return res.out('没有符合删除条件的数据',404)
             }
             res.out('永久删除成功',201,{deletedCount:result.deletedCount})
         }).catch(err => {

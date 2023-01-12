@@ -20,14 +20,17 @@
 > 除了用于登录和注册的接口,其余接口需要进行Token验证
 
 > 响应中状态响应码相关含义  
->| 状态码 | 一般含义 |   
->| :-: | --- | 
->| 200 | 资源请求成功 |
->| 201 | 成功创建新的资源 |
->| 400 | 请求失败 |
->| 401 | 用户身份验证失败 |
->| 403 | 理解请求,但是没有执行 |
->| 500 | 服务器内部错误 |
+>| 状态码 | 含义 | 说明 |   
+>| :-: | --- | --- | 
+>| 200 | OK |资源请求成功 |
+>| 201 | CREATED |成功创建新的资源 |
+>| 204 | DELETED | 删除资源成功
+>| 400 | BAD REQUEST |请求失败 |
+>| 401 | UNAUTHORIZED | 用户身份验证失败 |
+>| 403 | FORBIDDEN | 被禁止访问 |
+>| 404 | NOT FOUND | 资源不存在或请求的接口不存在
+>| 422 | Unprocesable entity | 参数验证错误
+>| 500 | INTERNAL SERVER ERROR |服务器内部错误 |
 ---
 ## 1 用户接口
 ---
@@ -196,7 +199,7 @@
 ```js
 {
     "msg": "永久删除成功",
-    "status": 201,
+    "status": 204,
     "data": {
         "deletedCount": 1
     }
@@ -222,7 +225,7 @@
 ``` js
 {
     "msg": "永久删除成功",
-    "status": 201,
+    "status": 204,
     "data": {
         "deletedCount": 10
     }
@@ -369,7 +372,7 @@
 ``` js
 {
     "msg": "删除分类成功",
-    "status": 200,
+    "status": 204,
     "data": {
         "_id": "63b2f276bd7c9300636bd4f6",
         "name": "罐头",
@@ -545,7 +548,7 @@
 ``` js
 {
     "msg": "删除物资信息成功",
-    "status": 201,
+    "status": 204,
     "data": {
         "_id": "63b2f90af658a9b35825144a",
         "name": "西红柿",
@@ -593,7 +596,7 @@
 ``` js
 {
     "msg": "创建物资配送表成功",
-    "status": 200,
+    "status": 201,
     "data": {
         "user_id": "639d58819ee3fb7390b20f5a",
         "supplies_info": [
@@ -643,7 +646,7 @@
 ``` js
 {
     "msg": "获取物资配送表成功",
-    "status": 201,
+    "status": 200,
     "data": [
         {
             "_id": "63bc1d5fd79cfb7937a9ddca",
@@ -701,7 +704,7 @@
 ``` js
 {
     "msg": "修改物资配送表成功",
-    "status": 200,
+    "status": 201,
     "data": {
         "_id": "63baae9efb0b344feae50a94",
         "user_id": "639d58819ee3fb7390b20f5a",
@@ -741,7 +744,7 @@
 ``` js
 {
     "msg": "删除物资配送表成功",
-    "status": 200,
+    "status": 204,
     "data": {
         "_id": "63baae9efb0b344feae50a94",
         "user_id": "639d58819ee3fb7390b20f5a",
@@ -764,8 +767,10 @@
 ---
 ## 5 配额申请表接口
 ---
-## 6 验证码发送与校验接口
-### 6.1 发送验证码
+## 6 物资单位接口
+---
+## 7 验证码发送与校验接口
+### 7.1 发送验证码
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `lost-pwd/send`   
 > 请求参数
@@ -784,13 +789,14 @@
 ``` js
 {
     "msg": "验证码发送成功",
+    "status":"200",
     "data": {
         "recipient": "17395026862"
     }
 }
 ```
 ---
-### 6.2 校验验证码
+### 7.2 校验验证码
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `lost-pwd/send`   
 > 请求参数
@@ -810,10 +816,76 @@
 ``` js
 {
     "msg": "验证码正确",
+    "status":"200",
     "data": {
         "auth": true
+    }
+```
+---
+## 8 登录接口
+请求方式  <span style="color:#FF8C00">POST</span> 
+请求路径 `/api/login`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| username | String | no | 用户名
+>| password | String | no | 密码
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 响应数据
+>| user | Object | 登录用户数据
+>| token | String | token字符串
+
+``` js
+{
+    "msg": "登录成功",
+    "status": 200,
+    "data": {
+        "user": {
+            "_id": "639d58819ee3fb7390b20f5a",
+            "username": "yirsgz",
+            "real_name": "张三",
+            "address": "",
+            "phone": "",
+            "ration": 10,
+            "avatar": "",
+            "is_delete": false,
+            "create_time": "2022-12-17T05:49:45.268Z"
+        },
+        "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InlpcnNneiIsImlhdCI6MTY3MzUzNDYzMSwiZXhwIjoxNjczNjIxMDMxfQ.sTy0u0ZJxn5421htxSXOxDfHjSyQT83SB4pJkWF0z9U"
     }
 }
 ```
 ---
-## 7 图像上传接口
+## 9 图像上传接口
+请求方式  <span style="color:#FF8C00">POST</span> 
+请求路径 `/api/login`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| file | File | no | 要上传的图像文件
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 响应数据
+>| imageNmae | String | 存储本地文件夹的图片名称
+>| imageUrl | String | 静态资源托管后生成可访问的URL
+
+响应示例
+``` js
+{
+    "msg": "上传成功",
+    "status": 200,
+    "data": {
+        "imageName": "1673536296396.jpg",
+        "imageUrl": "http://localhost:8080/avatar/1673536296396.jpg"
+    }
+}
+```

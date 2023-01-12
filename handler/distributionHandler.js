@@ -13,7 +13,7 @@ const postDist = (req,res) => {
         supplies_info.push(mixture)
     })
     distributionModule({user_id:body.user_id,supplies_info}).save().then(result => {
-        res.out('创建物资配送表成功',200,result)
+        res.out('创建物资配送表成功',201,result)
     }).catch(err => {
         res.out('创建物资配送表失败',400,err)
     })
@@ -35,7 +35,7 @@ const getDist = (req,res) => {
         userModule.find(userFilter).skip(skipNumber).limit(req.body.page_size).select('_id').then(result => {
             result.map(item => {
                 distributionModule.find({user_id:item._id}).lean().then(result1 => {
-                    res.out('获取物资配送表成功',201,result1)
+                    res.out('获取物资配送表成功',200,result1)
                 }).catch(err => {
                     res.out('获取物资配送表失败',400,err)
                 })
@@ -59,7 +59,7 @@ const getDist = (req,res) => {
     // 不传入user_id值时就返回全部的配送表数据
     distributionModule.find(filter).populate({path:'user_id',select:'-password'}).skip(skipNumber)
         .limit(req.body.page_size).then(result => {
-            res.out('获取物资配送表成功',201,result)
+            res.out('获取物资配送表成功',200,result)
     }).catch(err => [
         res.out('获取物资配送表失败',400,err)
     ])
@@ -67,7 +67,7 @@ const getDist = (req,res) => {
 
 const putDist = (req,res) => {
     distributionModule.findByIdAndUpdate(req.params.id,{...req.body},{new:true}).then(result => {
-        res.out('修改物资配送表成功',200,result)
+        res.out('修改物资配送表成功',201,result)
     }).catch(err => {
         res.out('修改物资配送表失败',400,err)
     })
@@ -75,7 +75,7 @@ const putDist = (req,res) => {
 
 const deleteDist = (req,res) => {
     distributionModule.findByIdAndDelete(req.params.id).then(result => {
-        res.out('删除物资配送表成功',200,result)
+        res.out('删除物资配送表成功',204,result)
     }).catch(err => {
         res.out('修改物资配送表失败',200,err)
     })

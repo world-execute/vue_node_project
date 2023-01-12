@@ -25,7 +25,7 @@ const changeMater = {
     }
 }
 
-const changeCate = {
+const checkName = {
     body:{
         name:field.name
     }
@@ -56,7 +56,7 @@ module.exports = joiSchema = {
     forLoginOrRegister,
     forPagination,
     changeMater,
-    changeCate,
+    checkName,
     changeDist,
     sendCode,
     checkCode

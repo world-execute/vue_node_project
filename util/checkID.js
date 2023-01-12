@@ -4,7 +4,7 @@ const checkId = (req,res,next) => {
         if(isValidObjectId(req.body.id)) return next()
         if(isValidObjectId(req.params.id))return next()
         if(isValidObjectId(req.query.id))return next()
-        res.out('id格式不正确',400)
+        res.out('id格式不正确',422)
         return
     }
     next()

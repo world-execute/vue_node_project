@@ -31,7 +31,7 @@ const getCate = async (req,res) => {
                 }
             })
         })
-        res.out('ok', 200, data)
+        res.out('获取物资分类成功', 200, data)
     }
 }
 
@@ -57,7 +57,7 @@ const deleteCate = (req,res) => {
                return res.out('删除该分类的子分类时出错',400)
             })
         }
-        res.out('删除分类成功',200,result)
+        res.out('删除分类成功',204,result)
     }).catch(err => {
         res.out('删除分类失败',400,err)
     })

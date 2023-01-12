@@ -16,7 +16,7 @@ cateRouter.post('/',(req,res,next) => {
         return res.out('父级id缺失')
     }
     next()
-},joiExpress(joiSchema.changeCate,{strict:true}),postCate)
+},joiExpress(joiSchema.checkName,{strict:true}),postCate)
 
 cateRouter.get('/',getCate)
 cateRouter.put('/:id',joiExpress(joiSchema.changeCate,{strict:true}),checkID,putCate)
