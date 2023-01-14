@@ -7,6 +7,9 @@ const distributionSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"user"
     },
+    employee_id:{
+
+    },
     supplies_info:{
         type: Array,
         required:true

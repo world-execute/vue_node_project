@@ -562,7 +562,7 @@
 ```
 ---
 ## 4 物资配送表接口
-### 4.1 新增物资配送表接口, 
+### 4.1 新增物资配送表
 请求方式 <span style="color:#FF8C00">POST</span> 请求路径 `distribution`   
 说明:数据库字段status代表了配送情况,物资信息使用表单数据,由于无法传值数组,所以将数组序列化成元素用 ','间隔的字符串
 数据库字段supplies_info其实由supplies_name(物资名称)和supplies_quantities(物资数量)组合而来
@@ -769,8 +769,157 @@
 ---
 ## 6 物资单位接口
 ---
-## 7 验证码发送与校验接口
-### 7.1 发送验证码
+## 7 员工职位接口
+---
+## 8 员工接口
+### 8.1 新增员工
+请求方式  <span style="color:#FF8C00">POST</span> 
+请求路径 `employee`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| username | String | no | 用户名
+>| password | String | no | 密码
+>| real_name | String | no | 真实姓名
+>| phone | String | no | 手机号码
+>| posts | String | no | 职位id
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 创建的员工信息
+
+响应示例
+``` js
+{
+    "msg": "创建员工信息成功",
+    "status": 201,
+    "data": {
+        "username": "csnkyibfjt",
+        "real_name": "龙超",
+        "phone": "18173962261",
+        "posts": {
+            "_id": "63c14d9dbe2e00008f000114",
+            "name": "配送员"
+        },
+        "_id": "63c221fcee71aed20418f57e"
+    }
+}
+```
+---
+### 8.2 获取员工信息
+请求方式  <span style="color:#00FF00">GET</span> 
+请求路径 `employee`   
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| page_num | String | no | 分页页码
+>| page_size | String | no | 分页大小
+>| query | String | yes | 模糊查询关键字
+>| posts | String | yes | 根据职位id返回员工信息,URL参数形式
+>| id | String | yes | 根据id返回员工信息,URL参数形式
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 获取到的员工信息
+
+响应示例
+``` js
+{
+    "msg": "获取员工信息成功",
+    "status": 200,
+    "data": [
+        {
+            "_id": "63c15872d71460a4cd443e48",
+            "username": "admin",
+            "real_name": "曹旭东",
+            "phone": "17395026862",
+            "posts": {
+                "name": "平台管理员"
+            }
+        },
+        {
+            "_id": "63c16033e92b50a1896803f0",
+            "username": "admin2",
+            "real_name": "陈军强",
+            "phone": "18179806378",
+            "posts": {
+                "name": "平台管理员"
+            }
+        }
+    ]
+}
+```
+---
+### 8.3 根据id修改员工信息
+请求方式 <span style="color:#00BFFF">PUT</span> 
+请求路径 `employee`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 要修改的员工id,放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 修改后的员工信息
+
+响应示例
+``` js
+{
+    "msg": "更新员工信息成功",
+    "status": 201,
+    "data": {
+        "_id": "63c16033e92b50a1896803f0",
+        "username": "admin1",
+        "real_name": "陈军强",
+        "phone": "18179806378",
+        "posts": "63c14ce6068ce0faff2dc487"
+    }
+}
+```
+---
+### 8.4 根据id删除员工信息
+请求方式 <span style="color:#DC143C">DELETE</span>
+请求路径 `employee`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | no | 要删除的员工id,放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的员工信息
+
+响应示例
+``` js
+{
+    "msg": "更新员工信息成功",
+    "status": 204,
+    "data": {
+        "_id": "63c16033e92b50a1896803f0",
+        "username": "admin1",
+        "real_name": "陈军强",
+        "phone": "18179806378",
+        "posts": "63c14ce6068ce0faff2dc487"
+    }
+}
+```
+
+## 验证码发送与校验接口
+### .1 发送验证码
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `lost-pwd/send`   
 > 请求参数
@@ -796,7 +945,7 @@
 }
 ```
 ---
-### 7.2 校验验证码
+### .2 校验验证码
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `lost-pwd/send`   
 > 请求参数
@@ -811,18 +960,25 @@
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
 >| auth | Boolean | 校验结果,通过为true,否则为false
+>| user_id | String | 校验用户的id,用于之后修改密码
+>| recipient | String | 手机号码或邮箱回显
 
 响应示例
 ``` js
 {
     "msg": "验证码正确",
-    "status":"200",
+    "status": 200,
     "data": {
-        "auth": true
+        "auth": true,
+        "user_id": "639d58819ee3fb7390b20f5a",
+        "recipient": "17395026862",
+        "code": "949063"
     }
+}
 ```
 ---
-## 8 登录接口
+
+##  登录接口
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `/api/login`   
 > 请求参数
@@ -861,7 +1017,7 @@
 }
 ```
 ---
-## 9 图像上传接口
+##  图像上传接口
 请求方式  <span style="color:#FF8C00">POST</span> 
 请求路径 `/api/login`   
 > 请求参数

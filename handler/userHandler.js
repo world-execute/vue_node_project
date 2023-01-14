@@ -3,15 +3,19 @@ const bcrypt = require('bcryptjs')
 
 const postUser = (req,res) => {
     const userinfo = {...req.body}
-    // 加密用户密码
-    userinfo.password = bcrypt.hashSync(userinfo.password,8)
-    userModule(userinfo).save().then(result => {
-        result.password = undefined
-        res.out('创建用户成功',201,result)
-    }).catch(err => {
-        res.out('用户创建失败',400,err)
+    userModule.find({username:userinfo.username}).then(result => {
+        if(result.length !== 0){
+            return res.out('用户已存在',200)
+        }
+        // 加密用户密码
+        userinfo.password = bcrypt.hashSync(userinfo.password,8)
+        userModule(userinfo).save().then(result => {
+            result.password = undefined
+            res.out('创建用户成功',201,result)
+        }).catch(err => {
+            res.out('用户创建失败',400,err)
+        })
     })
-
 }
 const getUserById = (req,res) => {
     userModule.findById(req.params.id).select('-password').then(result => {

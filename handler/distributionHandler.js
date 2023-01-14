@@ -55,10 +55,21 @@ const getDist = (req,res) => {
     if(req.query.status){
         filter.status = req.query.status
     }
+    if(req.query.employee_id){
+
+    }
+
+    const sort_info = {}
+    if(req.query.sort === 'old'){
+        sort_info.change_time = 1
+    }
+    if(req.query.sort === 'new'){
+        sort_info.change_time = -1
+    }
 
     // 不传入user_id值时就返回全部的配送表数据
     distributionModule.find(filter).populate({path:'user_id',select:'-password'}).skip(skipNumber)
-        .limit(req.body.page_size).then(result => {
+        .limit(req.body.page_size).sort(sort_info).then(result => {
             res.out('获取物资配送表成功',200,result)
     }).catch(err => [
         res.out('获取物资配送表失败',400,err)

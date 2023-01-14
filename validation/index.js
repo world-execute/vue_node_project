@@ -52,6 +52,16 @@ const checkCode = {
     }
 }
 
+const changeEmployee = {
+    body:{
+        username: field.username,
+        password: field.password,
+        real_name:field.real_name,
+        phone:field.phone,
+        posts:field.posts
+    }
+}
+
 module.exports = joiSchema = {
     forLoginOrRegister,
     forPagination,
@@ -59,5 +69,6 @@ module.exports = joiSchema = {
     checkName,
     changeDist,
     sendCode,
-    checkCode
+    checkCode,
+    changeEmployee
 }

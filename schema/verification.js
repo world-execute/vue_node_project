@@ -2,9 +2,13 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const verificationSchema = new Schema({
+    user_id:{
+        type:Schema.Types.ObjectId,
+        required: true
+    },
     recipient:{
         type:String,
-        require:true
+        required:true
     },
     code:{
         type:String,

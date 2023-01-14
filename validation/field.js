@@ -1,5 +1,5 @@
 const joi = require('joi')
-const getErrMessage = require('../joiErrMsg')
+const getErrMessage = require('../util/joiErrMsg')
 const fields = {}
 
 fields.username = joi.string().required().messages(getErrMessage('用户名'))
@@ -18,5 +18,8 @@ fields.supplies_names = joi.string().required().messages(getErrMessage('物资�
 fields.supplies_quantities = joi.string().required().messages(getErrMessage('物资数量组'))
 fields.recipient = joi.string().required().messages(getErrMessage('手机号或邮箱'))
 fields.code = joi.string().required().messages(getErrMessage('验证码'))
+fields.posts = joi.string().required().messages(getErrMessage('职位id'))
+fields.real_name = joi.string().required().messages(getErrMessage('职位id'))
+fields.phone = joi.string().required().messages(getErrMessage('手机号码'))
 
 module.exports = fields
