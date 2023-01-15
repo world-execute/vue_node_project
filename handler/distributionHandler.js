@@ -21,28 +21,6 @@ const postDist = (req,res) => {
 
 const getDist = (req,res) => {
     const skipNumber = (req.body.page_num -1)*req.body.page_size
-    // 通过模糊查询用户来找到对应的配送表
-    let keyWord = ''
-    if(req.body.query){
-         keyWord = req.body.query
-        const userFilter = {
-            $or:[
-                {real_name:{$regex: keyWord}},
-                {phone:{$regex: keyWord}},
-                {username:{$regex: keyWord}}
-            ]
-        }
-        userModule.find(userFilter).skip(skipNumber).limit(req.body.page_size).select('_id').then(result => {
-            result.map(item => {
-                distributionModule.find({user_id:item._id}).lean().then(result1 => {
-                    res.out('获取物资配送表成功',200,result1)
-                }).catch(err => {
-                    res.out('获取物资配送表失败',400,err)
-                })
-            })
-        })
-        return
-    }
 
     // 通过用户ID精准查询找到对应的配送表
     const filter = {}
@@ -56,9 +34,8 @@ const getDist = (req,res) => {
         filter.status = req.query.status
     }
     if(req.query.employee_id){
-
+        filter.employee_id = req.query.employee_id
     }
-
     const sort_info = {}
     if(req.query.sort === 'old'){
         sort_info.change_time = 1
@@ -67,8 +44,16 @@ const getDist = (req,res) => {
         sort_info.change_time = -1
     }
 
-    // 不传入user_id值时就返回全部的配送表数据
-    distributionModule.find(filter).populate({path:'user_id',select:'-password'}).skip(skipNumber)
+    distributionModule.find(filter)
+        .populate({
+            path:'user_id',
+            select:'real_name phone'
+        })
+        .populate({
+            path:'employee_id',
+            populate:{path:'posts'},
+            select:'real_name phone'
+        }).skip(skipNumber)
         .limit(req.body.page_size).sort(sort_info).then(result => {
             res.out('获取物资配送表成功',200,result)
     }).catch(err => [

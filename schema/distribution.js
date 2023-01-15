@@ -5,10 +5,12 @@ const Schema = mongoose.Schema
 const distributionSchema = new Schema({
     user_id:{
         type:Schema.Types.ObjectId,
-        ref:"user"
+        ref:"user",
+        required:true
     },
     employee_id:{
-
+        type:Schema.Types.ObjectId,
+        ref:"employee"
     },
     supplies_info:{
         type: Array,

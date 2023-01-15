@@ -22,8 +22,15 @@ const employeeSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'posts',
         required:true
+    },
+    performance:{
+        type:Number,
+        default:0
+    },
+    create_time:{
+        type:Date,
+        default: Date.now
     }
-
 },{versionKey:false})
 // 导出模型名 employeeModule
 // 数据库中集合名 employee

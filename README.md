@@ -632,6 +632,7 @@
 >| page_size | String | no | 分页大小
 >| query | String | yes | 查询用户然后返回第一个用户的物资配送表信息
 >| user_id | String | yes | 通过用户id精准查询该用户的物资配送表信息,使用URL参数形式
+>| employee_id | String | yes | 获取对应员工负责的物资配送表信息,使用URL参数形式
 >| accept | String | yes | 获取批准或不批准的物资配送表数据,可取值为 true(批准)\false(不批准),使用URL参数形式
 >| status | String | yes | 获取特定状态的物资配送表数据,使用URL参数形式
 
@@ -649,17 +650,11 @@
     "status": 200,
     "data": [
         {
-            "_id": "63bc1d5fd79cfb7937a9ddca",
+            "_id": "63c3759a61ba839bcb83b042",
             "user_id": {
                 "_id": "639d58819ee3fb7390b20f5a",
-                "username": "yirsgz",
                 "real_name": "张三",
-                "address": "",
-                "phone": "",
-                "ration": 10,
-                "avatar": "",
-                "is_delete": false,
-                "create_time": "2022-12-17T05:49:45.268Z"
+                "phone": "17395026862"
             },
             "supplies_info": [
                 {
@@ -677,7 +672,16 @@
             ],
             "status": 0,
             "is_accept": false,
-            "create_time": "2023-01-09T13:57:51.241Z"
+            "create_time": "2023-01-15T03:40:10.795Z",
+            "employee_id": {
+                "_id": "63c216baa17d2650834d9566",
+                "real_name": "邓刚",
+                "phone": "18197327456",
+                "posts": {
+                    "_id": "63c14d9dbe2e00008f000114",
+                    "name": "配送员"
+                }
+            }
         }
     ]
 }
@@ -820,6 +824,8 @@
 >| query | String | yes | 模糊查询关键字
 >| posts | String | yes | 根据职位id返回员工信息,URL参数形式
 >| id | String | yes | 根据id返回员工信息,URL参数形式
+>| sort | String | yes | 排序返回最近或最晚创建的员工信息,URL参数形式,可选参数 [new/old]
+>| performance | String | yes | 排序返回效绩最低或最高的员工信息,URL参数形式 [large/little]
 
 > 响应参数
 >| 参数名 | 参数类型 | 备注 | 初始值 | 

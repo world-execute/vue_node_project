@@ -1,5 +1,6 @@
 const employeeModule = require('../schema/employee')
 const bcrypt = require('bcryptjs')
+const {number} = require("joi");
 
 const postEmployee = (req,res) => {
     const employee = {...req.body}
@@ -38,18 +39,35 @@ const getEmployee = (req,res) => {
     if(req.query.posts){
         filter.posts = req.query.posts
     }
+    // 排序
+    const sortInfo = {}
+    if(req.query.sort){
+        sortInfo.create_time = req.query.sort==='new'?-1:1
+    }
+    if(req.query.performance){
+        sortInfo.performance = req.query.performance==='large'?-1:1
+    }
     const skipNumber = (req.body.page_num - 1)*req.body.page_size
     employeeModule.find(filter).skip(skipNumber).limit(req.body.page_size)
-        .populate('posts','-_id').select('-password').then(result => {
+        .populate('posts','-_id').select('-password')
+        .sort(sortInfo).then(result => {
         res.out('获取员工信息成功',200,result)
     }).catch(err => {
         res.out('获取员工信息失败',400,err)
     })
 }
 
-const putEmployee = (req,res) => {
+const putEmployee = async (req,res) => {
     if(req.body.password){
         req.body.password = bcrypt.hashSync(req.body.password,8)
+    }
+    if(req.body.performance){
+        if(typeof req.body.performance === 'string'){
+            req.body.performance = Number.parseInt(req.body.performance)
+        }
+        const result = await employeeModule.findById(req.params.id).lean()
+        req.body.performance += result.performance
+
     }
     employeeModule.findByIdAndUpdate(req.params.id,{...req.body},{new:true}).select('-password').then(result => {
         res.out('更新员工信息成功',201,result)
