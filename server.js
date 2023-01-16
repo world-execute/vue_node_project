@@ -21,6 +21,7 @@ const lostPwdRouter = require('./router/lostPwdRouter')
 const chargeUnitRouter = require('./router/chargeUnitRouter')
 const notFoundRouter = require('./router/notFoundRouter')
 const employeeRouter = require('./router/employeeRouter')
+const quotaChangeRouter = require('./router/quotaChangeRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -67,6 +68,7 @@ app.use('/api/distribution',distributionRouter)
 app.use('/api/lost-pwd',lostPwdRouter)
 app.use('/api/charge-unit',chargeUnitRouter)
 app.use('/api/employee',employeeRouter)
+app.use('/api/quota-change',quotaChangeRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {

@@ -6,18 +6,17 @@ const {postMater, getMater, putMater, deleteMater} = require('../handler/materia
 const checkID = require('../util/checkID')
 const {isValidObjectId} = require("mongoose");
 
-materialRouter.post('/',joiExpress(joiSchema.changeMater),checkID,postMater)
+materialRouter.post('/',joiExpress(joiSchema.changeMater),
+    checkID('body',['charge_unit,type']),postMater)
 
-materialRouter.get('/',joiExpress(joiSchema.forPagination),getMater)
+materialRouter.get('/',joiExpress(joiSchema.forPagination),
+    checkID('query',['type']),getMater)
 
-materialRouter.put('/:id',joiExpress(joiSchema.changeMater),(req,res,next) => {
-    if(!isValidObjectId(req.body.type)){
-        return res.out('物资分类id格式不正确',400)
-    }
-    next()
-},putMater)
+materialRouter.put('/:id',joiExpress(joiSchema.changeMater),
+    checkID('body',['charge_unit,type']),checkID('params','id'),
+    putMater)
 
-materialRouter.delete('/:id',checkID,deleteMater)
+materialRouter.delete('/:id',checkID('params','id'),deleteMater)
 
 
 module.exports = materialRouter

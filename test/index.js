@@ -1,5 +1,6 @@
 const postsModule = require('../schema/posts')
-const test = () => {
+const test = {}
+test.postPosts = () => {
     postsModule({name:'平台管理员'}).save().then(value => {
         console.log(value)
     },reason => {

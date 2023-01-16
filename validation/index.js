@@ -21,6 +21,7 @@ const changeMater = {
         quantity:field.quantity,
         price:field.price,
         type:field.type,
+        charge_unit:field.charge_unit,
         threshold:field.threshold
     }
 }
@@ -62,6 +63,13 @@ const changeEmployee = {
     }
 }
 
+const createQuota = {
+    body:{
+        user_id:field.user_id,
+        reason:field.reason
+    }
+}
+
 module.exports = joiSchema = {
     forLoginOrRegister,
     forPagination,
@@ -70,5 +78,6 @@ module.exports = joiSchema = {
     changeDist,
     sendCode,
     checkCode,
-    changeEmployee
+    changeEmployee,
+    createQuota
 }

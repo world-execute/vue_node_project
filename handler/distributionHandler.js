@@ -47,12 +47,12 @@ const getDist = (req,res) => {
     distributionModule.find(filter)
         .populate({
             path:'user_id',
-            select:'real_name phone'
+            select:'_id real_name phone'
         })
         .populate({
             path:'employee_id',
-            populate:{path:'posts'},
-            select:'real_name phone'
+            populate:{path:'posts',select:'-_id'},
+            select:'_id real_name phone'
         }).skip(skipNumber)
         .limit(req.body.page_size).sort(sort_info).then(result => {
             res.out('获取物资配送表成功',200,result)

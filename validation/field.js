@@ -21,5 +21,8 @@ fields.code = joi.string().required().messages(getErrMessage('验证码'))
 fields.posts = joi.string().required().messages(getErrMessage('职位id'))
 fields.real_name = joi.string().required().messages(getErrMessage('职位id'))
 fields.phone = joi.string().required().messages(getErrMessage('手机号码'))
+fields.reason = joi.string().required().messages(getErrMessage('变更原因'))
+fields.employee_id = joi.string().required().messages(getErrMessage('员工id'))
+fields.charge_unit = joi.string().required().messages(getErrMessage('计价单位'))
 
 module.exports = fields

@@ -16,10 +16,10 @@ cateRouter.post('/',(req,res,next) => {
         return res.out('父级id缺失')
     }
     next()
-},joiExpress(joiSchema.checkName,{strict:true}),postCate)
+},checkID('body','pid'),joiExpress(joiSchema.checkName,{strict:true}),postCate)
 
 cateRouter.get('/',getCate)
-cateRouter.put('/:id',joiExpress(joiSchema.changeCate,{strict:true}),checkID,putCate)
-cateRouter.delete('/:id',checkID,deleteCate)
+cateRouter.put('/:id',checkID('params','id'),putCate)
+cateRouter.delete('/:id',checkID('params','id'),deleteCate)
 
 module.exports = cateRouter

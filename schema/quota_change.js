@@ -18,6 +18,10 @@ const quota_changesSchema = new Schema({
     create_time:{
         type:Date,
         default: Date.now
+    },
+    employee_id:{
+        type:Schema.Types.ObjectId,
+        ref:'employee'
     }
 
 },{versionKey:false})

@@ -395,6 +395,7 @@
 >|price| Number | no | 物资单价
 >|type| String | no | 物资类别(对应分类的id)
 >|threshold| Number | no | 物资阈值
+>|charge_unit | String | no | 计价单位(对应id)
 
 > 响应参数
 >| 参数名 | 参数类型 | 备注 | 初始值 | 
@@ -505,6 +506,7 @@
 >|price| Number | no | 物资单价
 >|type| String | no | 物资类别(对应分类的id)
 >|threshold| Number | no | 物资阈值
+>|charge_unit | String | no | 计价单位(对应id)
 
 > 响应参数
 >| 参数名 | 参数类型 | 备注 | 初始值 | 
@@ -770,11 +772,260 @@
 ```
 ---
 ## 5 配额申请表接口
+### 5.1 新增配额申请表
+请求方式  <span style="color:#FF8C00">POST</span>  
+请求路径 `quota-change`   
+说明: 只需要用户id和配额变更原因即可创建,员工id可在之后审批完成时再填入
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| user_id | String | no | 用户id
+>| reason | String | no | 配额变更原因
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+>| user_id | String | 用户id
+>| reason | String | 配额变更原因
+>| is_accept | Boolean | 是否批准 | false
+>| change_time | String | 创建时间
+
+响应示例
+``` js
+{
+    "msg": "创建配额变更表成功",
+    "status": 201,
+    "data": {
+        "user_id": "639dca446caff9d53fc4263b",
+        "reason": "家庭成员众多",
+        "is_accept": false,
+        "_id": "63c56b802b299fa8d0a1833f",
+        "create_time": "2023-01-16T15:21:36.745Z"
+    }
+}
+```
 ---
-## 6 物资单位接口
+### 5.2 获取配额变更表信息
+请求方式 <span style="color:#00FF00">GET</span>  
+请求路径 `quota-change`      
+说明: user_id和employee_id字段会经过表连接返回对应信息,而不是其id值
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| page_num | String | no | 分页页码
+>| page_size | String | no | 分页大小
+>| id | String | yes | 配额变更表id,使用URL参数
+>| user_id | String | yes | 用户id,使用URL参数
+>| is_accept | String | yes | 根据审批状态返回数据,使用URL参数,可选值[true\false]
+>| sort | String | yes | 根据创建时间新旧返回数据,使用URL参数,可选值[new\old]
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 获取的分类的信息
+
+响应示例
+``` js
+{
+    "msg": "获取配额变更表成功",
+    "status": 200,
+    "data": {
+        "result": [
+            {
+                "_id": "63c4bbdb096b048fa1334b56",
+                "user_id": {
+                    "_id": "639dca446caff9d53fc4263b",
+                    "real_name": "李四",
+                    "phone": ""
+                },
+                "reason": "家庭成员众多",
+                "is_accept": true,
+                "create_time": "2023-01-16T02:52:11.614Z",
+                "employee_id": {
+                    "_id": "63c40a048008f55b2a90a3e2",
+                    "real_name": "方丽",
+                    "phone": "18688471775",
+                    "posts": {
+                        "name": "审核员"
+                    }
+                }
+            },
+            {
+                "_id": "63c546440a6fd4c1623e5888",
+                "user_id": {
+                    "_id": "639dca446caff9d53fc4263b",
+                    "real_name": "李四",
+                    "phone": ""
+                },
+                "reason": "家庭成员众多",
+                "is_accept": false,
+                "create_time": "2023-01-16T12:42:44.250Z"
+            }
+        ],
+        "total": 11
+    }
+}
+```
 ---
-## 7 员工职位接口
+### 5.3 修改配额变更表信息
+请求方式 <span style="color:#00BFFF">PUT</span> 
+请求路径 `quota-change`    
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | 修改的文档id | 放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 修改的分类的信息
+
+响应示例
+```js
+{
+    "msg": "修改配额变更表成功",
+    "status": 201,
+    "data": {
+        "_id": "63c4bbdb096b048fa1334b56",
+        "user_id": "639dca446caff9d53fc4263b",
+        "reason": "家庭成员众多",
+        "is_accept": true,
+        "create_time": "2023-01-16T02:52:11.614Z",
+        "employee_id": "63c40a048008f55b2a90a3e2"
+    }
+}
+```
 ---
+### 5.4 删除配额变更表信息
+请求方式  <span style="color:#DC143C">DELETE</span>  
+请求路径 `quota-change`    
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| id | String | 删除的文档id | 放置在URL中
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的分类的信息
+
+响应示例
+```js
+{
+    "msg": "删除配额变更表成功",
+    "status": 204,
+    "data": {
+        "_id": "63c4bbdb096b048fa1334b56",
+        "user_id": "639dca446caff9d53fc4263b",
+        "reason": "家庭成员众多",
+        "is_accept": true,
+        "create_time": "2023-01-16T02:52:11.614Z",
+        "employee_id": "63c40a048008f55b2a90a3e2"
+    }
+}
+```
+---
+## 6 物资计价单位接口
+### 6.1 新增计价单位
+请求方式 <span style="color:#FF8C00">POST</span>  
+请求路径 `charge-unit`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| name | String | no | 计价单位名称
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 创建的计价单位信息
+
+响应示例
+```js
+{
+    "msg": "创建计价单位成功",
+    "status": 201,
+    "data": {
+        "name": "袋",
+        "_id": "63c4213ccb035d2ac374ed6a"
+    }
+}
+```
+
+### 6.2 获取计价单位
+请求方式 <span style="color:#00FF00">GET</span>
+请求路径 `charge-unit`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| query | String | yes | 计价单位查询
+>| id | String | yes | 计价单位id
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 创建的计价单位信息
+
+响应示例
+```js
+{
+    "msg": "获取计价单位成功",
+    "status": 200,
+    "data": [
+        {
+            "_id": "63bec5d40fcd506d7848a93e",
+            "name": "斤"
+        }
+    ]
+}
+```
+---
+### 6.3 删除计价单位
+请求方式  <span style="color:#DC143C">DELETE</span>
+请求路径 `charge-unit`   
+说明:
+> 请求参数
+>| 参数名 | 参数类型 | 可否为空 | 备注 | 
+>| --- | --- | --- | --- | 
+>| query | String | yes | 计价单位查询
+>| id | String | yes | 计价单位id
+
+> 响应参数
+>| 参数名 | 参数类型 | 备注 | 初始值 | 
+>| --- | --- | --- | --- | 
+>| msg | String | 响应说明 
+>| status | Number | 响应状态码
+>| data | Object | 删除的计价单位信息
+
+响应示例
+```js
+{
+    "msg": "删除计价单位成功",
+    "status": 204,
+    "data": [
+        {
+            "_id": "63bec5d40fcd506d7848a93e",
+            "name": "斤"
+        }
+    ]
+}
+```
+---
+## 7 
 ## 8 员工接口
 ### 8.1 新增员工
 请求方式  <span style="color:#FF8C00">POST</span> 

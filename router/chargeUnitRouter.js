@@ -7,6 +7,6 @@ const checkID = require('../util/checkID')
 
 chargeUnitRouter.post('/',joiExpress(joiSchema.checkName),postUnit)
 chargeUnitRouter.get('/',getUnit)
-chargeUnitRouter.delete('/:id',checkID,deleteUnit)
+chargeUnitRouter.delete('/:id',checkID('params','id'),deleteUnit)
 
 module.exports = chargeUnitRouter
