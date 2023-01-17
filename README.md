@@ -95,7 +95,7 @@
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
 >| users | Array | 包含用户数据的数组
->| total | Number | 用户数据的总量
+>| total | Number | 用户数据的总量(文档内全部数量)
 
 响应示例
 ``` js
@@ -409,6 +409,7 @@
 >|type| String  | 物资类别(对应分类的id)
 >|threshold| Number  | 物资阈值
 >|change_time|String | 物资修改时间(包含第一次创建)
+>|total| String | 物资总数量
 
 响应示例
 ``` js
@@ -454,43 +455,60 @@
 >| --- | --- | --- | --- | 
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
->| data | Object | 删除的分类的信息
+>| data | Object | 获取的物资信息
+>| type | Object | 物资类型
+>| pid | Object | 物资的父级
+>| charge_unit | Object | 物资计价单位
+>| total | Number | 物资总数
 
 响应示例
 ``` js
 {
     "msg": "获取物资信息成功",
     "status": 200,
-    "data": [
-        {
-            "_id": "63b6e292885955107f819696",
-            "name": "土豆",
-            "quantity": 200,
-            "price": 6,
-            "type": {
-                "_id": "63b2f298bd7c9300636bd4fa",
-                "name": "蔬菜",
-                "level": 1,
-                "pid": "63b2f19c42102293782b2a3a"
+    "data": {
+        "result": [
+            {
+                "_id": "63b2f9aa1c81fd4055e5f8ad",
+                "name": "白萝卜",
+                "quantity": 200,
+                "price": 3,
+                "type": {
+                    "name": "蔬菜",
+                    "level": 1,
+                    "pid": {
+                        "name": "食品",
+                        "level": 0
+                    }
+                },
+                "threshold": 50,
+                "change_time": "2023-01-17T14:03:48.029Z",
+                "charge_unit": {
+                    "name": "斤"
+                }
             },
-            "threshold": 100,
-            "change_time": "2023-01-05T14:38:01.120Z"
-        },
-        {
-            "_id": "63b2f90af658a9b35825144a",
-            "name": "西红柿",
-            "quantity": 50,
-            "price": 6,
-            "type": {
-                "_id": "63b2f298bd7c9300636bd4fa",
-                "name": "蔬菜",
-                "level": 1,
-                "pid": "63b2f19c42102293782b2a3a"
-            },
-            "threshold": 100,
-            "change_time": "2023-01-05T13:38:27.312Z"
-        }
-    ]
+            {
+                "_id": "63bc1631dd816c1d37ba4a8a",
+                "name": "生菜",
+                "quantity": 443,
+                "price": 3,
+                "type": {
+                    "name": "蔬菜",
+                    "level": 1,
+                    "pid": {
+                        "name": "食品",
+                        "level": 0
+                    }
+                },
+                "threshold": 220,
+                "change_time": "2023-01-09T13:27:13.114Z",
+                "charge_unit": {
+                    "name": "斤"
+                }
+            }
+        ],
+        "total": 13
+    }
 }
 ```
 ---
@@ -643,49 +661,45 @@
 >| --- | --- | --- | 
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
->| data | Object | 删除的分类的信息
+>| result | Object | 获取的物资配送表信息
+>| total | Number | 物资总数
 
 响应示例
 ``` js
 {
     "msg": "获取物资配送表成功",
     "status": 200,
-    "data": [
-        {
-            "_id": "63c3759a61ba839bcb83b042",
-            "user_id": {
-                "_id": "639d58819ee3fb7390b20f5a",
-                "real_name": "张三",
-                "phone": "17395026862"
-            },
-            "supplies_info": [
-                {
-                    "name": "芹菜",
-                    "quantity": "30"
+    "data": {
+        "result": [
+            {
+                "_id": "63c3759a61ba839bcb83b042",
+                "user_id": {
+                    "_id": "639d58819ee3fb7390b20f5a",
+                    "real_name": "张三",
+                    "phone": "17395026862"
                 },
-                {
-                    "name": "西红柿",
-                    "quantity": "20"
-                },
-                {
-                    "name": "白菜",
-                    "quantity": "40"
-                }
-            ],
-            "status": 0,
-            "is_accept": false,
-            "create_time": "2023-01-15T03:40:10.795Z",
-            "employee_id": {
-                "_id": "63c216baa17d2650834d9566",
-                "real_name": "邓刚",
-                "phone": "18197327456",
-                "posts": {
-                    "_id": "63c14d9dbe2e00008f000114",
-                    "name": "配送员"
-                }
+                "supplies_info": [
+                    {
+                        "name": "芹菜",
+                        "quantity": "30"
+                    },
+                    {
+                        "name": "西红柿",
+                        "quantity": "20"
+                    },
+                    {
+                        "name": "白菜",
+                        "quantity": "40"
+                    }
+                ],
+                "status": 0,
+                "is_accept": false,
+                "create_time": "2023-01-15T03:40:10.795Z",
+                "employee_id": null
             }
-        }
-    ]
+        ],
+        "total": 1
+    }
 }
 ```
 ### 4.3 修改物资配送表信息
@@ -971,14 +985,14 @@
 >| 参数名 | 参数类型 | 可否为空 | 备注 | 
 >| --- | --- | --- | --- | 
 >| query | String | yes | 计价单位查询
->| id | String | yes | 计价单位id
+>| id | String | yes | 返回指定id的计价单位
 
 > 响应参数
 >| 参数名 | 参数类型 | 备注 | 初始值 | 
 >| --- | --- | --- | --- | 
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
->| data | Object | 创建的计价单位信息
+>| data | Object | 计价单位信息
 
 响应示例
 ```js
@@ -1025,7 +1039,9 @@
 }
 ```
 ---
-## 7 
+## 7
+ 
+---
 ## 8 员工接口
 ### 8.1 新增员工
 请求方式  <span style="color:#FF8C00">POST</span> 
@@ -1084,32 +1100,40 @@
 >| msg | String | 响应说明 
 >| status | Number | 响应状态码
 >| data | Object | 获取到的员工信息
+>| total | Number | 员工物资信息总量
 
 响应示例
 ``` js
 {
     "msg": "获取员工信息成功",
     "status": 200,
-    "data": [
-        {
-            "_id": "63c15872d71460a4cd443e48",
-            "username": "admin",
-            "real_name": "曹旭东",
-            "phone": "17395026862",
-            "posts": {
-                "name": "平台管理员"
+    "data": {
+        "result": [
+            {
+                "_id": "63c3eb927fe17172ebc981fe",
+                "username": "tnsqsbima",
+                "real_name": "曹旭东",
+                "phone": "17395026862",
+                "posts": {
+                    "name": "平台管理员"
+                },
+                "performance": 3,
+                "create_time": "2023-01-15T06:12:32.198Z"
+            },
+            {
+                "_id": "63c409d08008f55b2a90a3d6",
+                "username": "perijvrgm",
+                "real_name": "潘洋",
+                "phone": "18187813105",
+                "posts": {
+                    "name": "平台管理员"
+                },
+                "performance": 5,
+                "create_time": "2023-01-15T14:12:32.198Z"
             }
-        },
-        {
-            "_id": "63c16033e92b50a1896803f0",
-            "username": "admin2",
-            "real_name": "陈军强",
-            "phone": "18179806378",
-            "posts": {
-                "name": "平台管理员"
-            }
-        }
-    ]
+        ],
+        "total": 37
+    }
 }
 ```
 ---

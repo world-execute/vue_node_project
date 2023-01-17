@@ -26,29 +26,34 @@ const postMater = (req,res) => {
 const getMater = (req,res) => {
     const skipNumber = (req.body.page_num -1)*req.body.page_size
     const keyWord = req.body.query?req.body.query:''
-    const type = req.query.type
     const checkThreshold = req.query.lower?"this.quantity < this.threshold":'true'
     const sort_info = {}
-    if(req.query.sort === 'old'){
-        sort_info.change_time = 1
-    }
-    if(req.query.sort === 'new'){
-        sort_info.change_time = -1
+    if(req.query.sort){
+        sort_info.change_time = req.query.sort === 'new'?-1:1
     }
     const filter = {
         name:{$regex:keyWord},
         "$where":checkThreshold
     }
-    if(type && !isValidObjectId(type)){
-        return res.out('分类id格式不正确',422)
-    }else if (type){
-        filter.type=type
+    if(req.query.type){
+        filter.type = req.query.type
     }
-    materialModule.find(filter).populate('type').populate('charge_unit')
-        .skip(skipNumber).limit(req.body.page_size).sort(sort_info).then(result => {
-            res.out('获取物资信息成功',200,result)
-    }).catch(err => {
-        res.out('获取物资信息失败',400,err)
+    materialModule.countDocuments().then(count => {
+        materialModule.find(filter)
+            .populate({
+                path:'type',
+                select:'-_id',
+                populate:{path:'pid',select:'-_id'}
+            })
+            .populate({
+                path:'charge_unit',
+                select:'-_id'
+            })
+            .skip(skipNumber).limit(req.body.page_size).sort(sort_info).then(result => {
+            res.out('获取物资信息成功',200,{result,total:count})
+        }).catch(err => {
+            res.out('获取物资信息失败',400,err)
+        })
     })
 }
 

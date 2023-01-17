@@ -12,9 +12,8 @@ materialRouter.post('/',joiExpress(joiSchema.changeMater),
 materialRouter.get('/',joiExpress(joiSchema.forPagination),
     checkID('query',['type']),getMater)
 
-materialRouter.put('/:id',joiExpress(joiSchema.changeMater),
-    checkID('body',['charge_unit,type']),checkID('params','id'),
-    putMater)
+materialRouter.put('/:id',checkID('body',['charge_unit','type']),
+    checkID('params','id'),putMater)
 
 materialRouter.delete('/:id',checkID('params','id'),deleteMater)
 

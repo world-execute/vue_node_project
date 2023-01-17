@@ -9,7 +9,7 @@ quotaChangeRouter.post('/',joiExpress(joiSchema.createQuota),
     postQuota)
 quotaChangeRouter.get('/',joiExpress(joiSchema.forPagination),
     checkID('query','user_id'),getQuota)
-quotaChangeRouter.put('/:id',chickID('params','id'),
+quotaChangeRouter.put('/:id',checkID('params','id'),
     checkID('body','employee_id'),putQuota)
 quotaChangeRouter.delete('/:id',checkID('params','id'),deleteQuota)
 

@@ -41,12 +41,12 @@ const getUser = (req,res) => {
             {username:{$regex: keyWord}}
         ]
     }
-    userModule.find(filter).select('-password').skip(skipNumber).limit(req.body.page_size).then(async result => {
-        // const count = await userModule.countDocuments(filter)
-        const count = result.length
-        res.out('获取用户成功',200,{users:result,total:count})
-    }).catch(err => {
-        res.out('获取用户信息失败',400,err)
+    userModule.countDocuments().then(count => {
+        userModule.find(filter).select('-password').skip(skipNumber).limit(req.body.page_size).then(async result => {
+            res.out('获取用户成功',200,{result,total:count})
+        }).catch(err => {
+            res.out('获取用户信息失败',400,err)
+        })
     })
 }
 

@@ -12,7 +12,8 @@ const categoriesSchema = new Schema({
         default:0
     },
     pid:{
-        type:Schema.Types.ObjectId
+        type:Schema.Types.ObjectId,
+        ref:'categories'
     }
 },{versionKey:false})
 // 导出模型名 categoriesModule

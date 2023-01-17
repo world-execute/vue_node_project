@@ -37,28 +37,26 @@ const getDist = (req,res) => {
         filter.employee_id = req.query.employee_id
     }
     const sort_info = {}
-    if(req.query.sort === 'old'){
-        sort_info.change_time = 1
+    if(req.query.sort){
+        sort_info.create_time = req.query.sort === 'new'?-1:1
     }
-    if(req.query.sort === 'new'){
-        sort_info.change_time = -1
-    }
-
-    distributionModule.find(filter)
-        .populate({
-            path:'user_id',
-            select:'_id real_name phone'
-        })
-        .populate({
-            path:'employee_id',
-            populate:{path:'posts',select:'-_id'},
-            select:'_id real_name phone'
-        }).skip(skipNumber)
-        .limit(req.body.page_size).sort(sort_info).then(result => {
-            res.out('获取物资配送表成功',200,result)
-    }).catch(err => [
-        res.out('获取物资配送表失败',400,err)
-    ])
+    distributionModule.countDocuments().then(count => {
+        distributionModule.find(filter)
+            .populate({
+                path:'user_id',
+                select:'_id real_name phone'
+            })
+            .populate({
+                path:'employee_id',
+                populate:{path:'posts',select:'-_id'},
+                select:'_id real_name phone'
+            }).skip(skipNumber)
+            .limit(req.body.page_size).sort(sort_info).then(result => {
+            res.out('获取物资配送表成功',200,{result,total:count})
+        }).catch(err => [
+            res.out('获取物资配送表失败',400,err)
+        ])
+    })
 }
 
 const putDist = (req,res) => {

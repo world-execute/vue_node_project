@@ -21,7 +21,7 @@ const postEmployee = (req,res) => {
     })
 }
 
-const getEmployee = (req,res) => {
+const getEmployee = async (req,res) => {
     const filter = {}
     if(req.query.id){
         filter._id = req.query.id
@@ -48,10 +48,11 @@ const getEmployee = (req,res) => {
         sortInfo.performance = req.query.performance==='large'?-1:1
     }
     const skipNumber = (req.body.page_num - 1)*req.body.page_size
+    const count = await employeeModule.countDocuments()
     employeeModule.find(filter).skip(skipNumber).limit(req.body.page_size)
         .populate('posts','-_id').select('-password')
         .sort(sortInfo).then(result => {
-        res.out('获取员工信息成功',200,result)
+        res.out('获取员工信息成功',200,{result,total:count})
     }).catch(err => {
         res.out('获取员工信息失败',400,err)
     })
