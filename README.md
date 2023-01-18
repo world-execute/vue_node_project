@@ -56,7 +56,7 @@
 >| apply_ration | Array | 申请变更配额id数组 | [ ]
 >| avatar | String | 用户头像url | 空字符串
 >| is_delete | Boolean | 用户软删除 | false
->| create_time | Date | 用户创建时间 | Date.now()
+>| create_time | Date | 用户创建时间 | Date.now
 
 响应示例
 ``` js
