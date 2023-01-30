@@ -6,6 +6,7 @@ const joiExpress = require('@escook/express-joi')
 const joiSchema = require('../validation')
 const axios = require('axios')
 const {client} = require('../config')
+const bcrypt = require('bcryptjs')
 lostPwdRouter.post('/send',joiExpress(joiSchema.sendCode),((req, res) => {
     userModule.find({phone:req.body.recipient}).then(result => {
         if(result.length === 0){
@@ -44,6 +45,16 @@ lostPwdRouter.post('/check',joiExpress(joiSchema.checkCode),(req, res) => {
         }
     }).catch(err => {
         return res.out('读取验证码失败',400,err)
+    })
+})
+
+
+lostPwdRouter.post('/change',joiExpress(joiSchema.changePwd),(req, res) => {
+    req.body.password = bcrypt.hashSync(req.body.password,8)
+    userModule.findByIdAndUpdate({_id:req.body.id},{password:req.body.password},{new:true}).select('-password').then(result => {
+        res.out('修改密码成功',201,result)
+    }).catch(err => {
+        res.out('修改密码失败',400,err)
     })
 })
 

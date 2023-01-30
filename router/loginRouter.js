@@ -17,6 +17,7 @@ loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
             // 生成jwt
             // 载荷
             const playload ={}
+            playload.id = result._id
             playload.username = result.username
             playload.type = result.type
             const token = 'Bearer '+jwt.sign(playload,jwtConfig.secret,jwtConfig.option)
@@ -27,5 +28,12 @@ loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
     }).catch(err => {
         res.out('获取用户失败',400,err)
     })
+})
+
+loginRouter.post('/check',(req,res) => {
+    userModule.findById(req.auth.id).select('-password').then(result => {
+        res.out('token校验通过',200,result)
+    })
+    
 })
 module.exports = loginRouter

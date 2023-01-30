@@ -27,8 +27,8 @@ const getEmployee = async (req,res) => {
         filter._id = req.query.id
     }
     // 模糊查询
-    if(req.body.query){
-        const keyWord = req.body.query
+    if(req.query.search){
+        const keyWord = req.body.search
         filter.$or = [
             {real_name:{$regex: keyWord}},
             {phone:{$regex: keyWord}},
@@ -47,9 +47,8 @@ const getEmployee = async (req,res) => {
     if(req.query.performance){
         sortInfo.performance = req.query.performance==='large'?-1:1
     }
-    const skipNumber = (req.body.page_num - 1)*req.body.page_size
     const count = await employeeModule.countDocuments()
-    employeeModule.find(filter).skip(skipNumber).limit(req.body.page_size)
+    employeeModule.find(filter).skip(req.skipNumber).limit(req.limitNumber)
         .populate('posts','-_id').select('-password')
         .sort(sortInfo).then(result => {
         res.out('获取员工信息成功',200,{result,total:count})

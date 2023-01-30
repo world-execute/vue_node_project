@@ -5,11 +5,12 @@ const joiSchema = require('../validation')
 const {postMater, getMater, putMater, deleteMater} = require('../handler/materialHandler')
 const checkID = require('../util/checkID')
 const {isValidObjectId} = require("mongoose");
+const pagination = require('../util/pagination')
 
 materialRouter.post('/',joiExpress(joiSchema.changeMater),
     checkID('body',['charge_unit,type']),postMater)
 
-materialRouter.get('/',joiExpress(joiSchema.forPagination),
+materialRouter.get('/',pagination,
     checkID('query',['type']),getMater)
 
 materialRouter.put('/:id',checkID('body',['charge_unit','type']),

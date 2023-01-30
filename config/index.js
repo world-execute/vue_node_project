@@ -6,11 +6,11 @@ const db_info = {
 const jwtConfig = {
     secret:'!@@_@@!',
     option:{
-        expiresIn:'1day'
+        expiresIn:'7day'
     },
     unlessPath:{
         path:[/\/api/]
-        // path:[/login$/,/register$/,/.png$/,/.jpg$/]
+        // path:[/change$/,/send$/,/login$/,/register$/,/.png$/,/.jpg$/]
     }
 }
 const client = {

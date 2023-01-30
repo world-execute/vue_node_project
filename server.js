@@ -35,6 +35,7 @@ app.use(expressjwt({secret:jwtConfig.secret,algorithms:['HS256']}).unless(jwtCon
 app.use(express.static('public'))
 
 // 连接MongoDB数据库
+console.log('-----------------------'+color('blueBG','[system info]')+'-------------------------------');
 const url = `mongodb://${db_info.host}:${db_info.port}/${db_info.db}`
 mongoose.connect(url).then(() => {
     console.log(color('green','[databases]'),color('blue','mongodb is connection'))
@@ -50,7 +51,7 @@ app.use((req,res,next) => {
             msg = '没有获取到相关数据'
             status = 404
         }
-        res.status(status).send({
+        res.send({
             msg,
             status,
             data
@@ -58,6 +59,17 @@ app.use((req,res,next) => {
     }
     next()
 })
+// 控制台输出调试
+app.use((req,res,next) => {
+    console.log('-----------------------'+color('greenBG','[debug]')+'-------------------------------');
+    console.log(color('cyan','[path]'),req.path);
+    console.log(color('blue','[body]'),req.body);
+    console.log(color('blue','[query]'),req.query);
+    console.log(color('blue','[params]'),req.params);
+    console.log(color('red','[auth]'),req.auth);
+    next()
+})
+
 // 处理路由
 app.use('/api/user',userRouter)
 app.use('/api/login',loginRouter)
@@ -73,22 +85,36 @@ app.use('/api/quota-change',quotaChangeRouter)
 // 错误处理中间件
 app.use((err,req,res,next) => {
     if(err){
+        if(err.message === 'invalid token'){
+            return res.status(401).send({msg:'Token格式错误',status:401})
+        }
         if(err.message === 'No authorization token was found' || err.message === 'jwt expired'){
             return res.status(401).send({msg:'无效的Token或Token已过期',status:401})
         }
         if(err instanceof joi.ValidationError){
             return res.status(422).send({msg:'参数验证错误',status:422,err:err.message})
         }
-        console.log(color('red','出现未知错误')+'详细信息:')
+        console.log('-----------------------'+color('redBG','[ERROR]')+'-------------------------------');
+        console.log(color('red','[出现未知错误]  ')+color('red',err.message))
+        console.log(color('red','详细信息 : '));
         console.log(err)
         return res.status(500).json({msg:'服务器未知错误',err:err.message})
     }
 })
 
+// 测试用接口
+// app.use('/api/test',(req,res,next) => {
+//     console.log(req.body);  // 请求体
+//     console.log(req.query);  // URL参数
+//     // console.log(req.params.id);  // URL动态路由参数
+//     res.out('ok',400)
+// })
+
 // 处理未匹配的路由
 app.use(notFoundRouter)
 // 测试入口
 // test()
+
 
 app.listen(port,()=>{
     console.log(color('green','[server]'),color('blue','server is running,')+`base url: http://localhost:${port}`)

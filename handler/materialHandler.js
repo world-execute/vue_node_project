@@ -24,8 +24,7 @@ const postMater = (req,res) => {
 }
 
 const getMater = (req,res) => {
-    const skipNumber = (req.body.page_num -1)*req.body.page_size
-    const keyWord = req.body.query?req.body.query:''
+    const keyWord = req.query.search?req.body.search:''
     const checkThreshold = req.query.lower?"this.quantity < this.threshold":'true'
     const sort_info = {}
     if(req.query.sort){
@@ -49,7 +48,7 @@ const getMater = (req,res) => {
                 path:'charge_unit',
                 select:'-_id'
             })
-            .skip(skipNumber).limit(req.body.page_size).sort(sort_info).then(result => {
+            .skip(req.skipNumber).limit(req.limitNumber).sort(sort_info).then(result => {
             res.out('获取物资信息成功',200,{result,total:count})
         }).catch(err => {
             res.out('获取物资信息失败',400,err)

@@ -7,7 +7,6 @@ const postQuota = (req,res) => {
     })
 }
 const getQuota = (req,res) => {
-    const skipNumber = (req.body.page_num-1)*req.body.page_size
     const filter = {}
     if(req.query.user_id){
         filter.user_id = req.query.user_id
@@ -23,7 +22,7 @@ const getQuota = (req,res) => {
         sortInfo.create_time = req.query.sort==='new'?-1:1
     }
     quotaChangesModule.countDocuments().then(count => {
-        quotaChangesModule.find(filter).skip(skipNumber)
+        quotaChangesModule.find(filter).skip(req.skipNumber)
             .populate({
                 path:'user_id',
                 select:'_id real_name phone'
@@ -33,7 +32,7 @@ const getQuota = (req,res) => {
                 populate:{path:'posts',select:'-_id'},
                 select:'_id real_name phone'
             })
-            .limit(req.body.page_size)
+            .limit(req.limitNumber)
             .sort(sortInfo).then(result => {
             res.out('获取配额变更表成功',200,{result,total:count})
         }).catch(err => {

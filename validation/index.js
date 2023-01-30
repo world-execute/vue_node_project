@@ -7,13 +7,6 @@ const forLoginOrRegister = {
         password:field.password
     }
 }
-const forPagination = {
-    body:{
-        query:field.query,
-        page_size:field.page_size,
-        page_num:field.page_num
-    }
-}
 
 const changeMater = {
     body:{
@@ -53,6 +46,13 @@ const checkCode = {
     }
 }
 
+const changePwd = {
+    body:{
+        id:field.id,
+        password:field.password
+    }
+}
+
 const changeEmployee = {
     body:{
         username: field.username,
@@ -72,12 +72,12 @@ const createQuota = {
 
 module.exports = joiSchema = {
     forLoginOrRegister,
-    forPagination,
     changeMater,
     checkName,
     changeDist,
     sendCode,
     checkCode,
     changeEmployee,
-    createQuota
+    createQuota,
+    changePwd
 }

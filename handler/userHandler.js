@@ -17,6 +17,7 @@ const postUser = (req,res) => {
         })
     })
 }
+
 const getUserById = (req,res) => {
     userModule.findById(req.params.id).select('-password').then(result => {
         if(result.is_delete){
@@ -29,9 +30,8 @@ const getUserById = (req,res) => {
 
 }
 const getUser = (req,res) => {
-    const skipNumber = (req.body.page_num -1)*req.body.page_size
     // 获取模糊查询关键字
-    const keyWord = req.body.query?req.body.query:''
+    const keyWord = req.query.search?req.query.search:''
     // 过滤条件
     const filter = {
         is_delete:false,
@@ -41,8 +41,11 @@ const getUser = (req,res) => {
             {username:{$regex: keyWord}}
         ]
     }
+    if(req.query.username){
+        filter.username = req.query.username
+    }
     userModule.countDocuments().then(count => {
-        userModule.find(filter).select('-password').skip(skipNumber).limit(req.body.page_size).then(async result => {
+        userModule.find(filter).select('-password').skip(req.skipNumber).limit(req.limitNumber).then(async result => {
             res.out('获取用户成功',200,{result,total:count})
         }).catch(err => {
             res.out('获取用户信息失败',400,err)
@@ -51,11 +54,6 @@ const getUser = (req,res) => {
 }
 
 const putUser = (req,res) => {
-    const update = {...req.body}
-    if(update.password){
-        // 加密用户密码
-        update.password = bcrypt.hashSync(update.password,8)
-    }
     userModule.findByIdAndUpdate({_id:req.params.id},update,{new:true}).select('-password').then(result => {
         res.out('修改用户成功',201,result)
     }).catch(err => {

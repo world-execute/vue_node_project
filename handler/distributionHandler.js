@@ -20,8 +20,6 @@ const postDist = (req,res) => {
 }
 
 const getDist = (req,res) => {
-    const skipNumber = (req.body.page_num -1)*req.body.page_size
-
     // 通过用户ID精准查询找到对应的配送表
     const filter = {}
     if(req.query.user_id){
@@ -50,8 +48,8 @@ const getDist = (req,res) => {
                 path:'employee_id',
                 populate:{path:'posts',select:'-_id'},
                 select:'_id real_name phone'
-            }).skip(skipNumber)
-            .limit(req.body.page_size).sort(sort_info).then(result => {
+            }).skip(req.skipNumber)
+            .limit(req.limitNumber).sort(sort_info).then(result => {
             res.out('获取物资配送表成功',200,{result,total:count})
         }).catch(err => [
             res.out('获取物资配送表失败',400,err)
