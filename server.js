@@ -62,6 +62,7 @@ app.use((req,res,next) => {
 // 控制台输出调试
 app.use((req,res,next) => {
     console.log('-----------------------'+color('greenBG','[debug]')+'-------------------------------');
+    console.log(color('cyan','[method]'),req.method);
     console.log(color('cyan','[path]'),req.path);
     console.log(color('blue','[body]'),req.body);
     console.log(color('blue','[query]'),req.query);

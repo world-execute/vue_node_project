@@ -5,6 +5,7 @@ const joiSchema = require('../validation')
 const joiExpress = require('@escook/express-joi')
 const checkID = require('../util/checkID')
 const pagination = require('../util/pagination')
+const filterField = require('../util/filterField')
 
 // 获取指定id用户
 router.get('/:id',checkID('params','id'),getUserById)
@@ -13,7 +14,7 @@ router.get('/',pagination,getUser)
 // 新增用户
 router.post('/',joiExpress(joiSchema.forLoginOrRegister),postUser)
 // 修改用户信息
-router.put('/:id',checkID('params','id'),putUser)
+router.put('/:id',checkID('params','id'),filterField,putUser)
 // 删除用户信息
 router.delete('/:id',checkID('params','id'),deleteUser)
 router.delete('/',deleteUser)

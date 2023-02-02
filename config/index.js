@@ -9,7 +9,7 @@ const jwtConfig = {
         expiresIn:'7day'
     },
     unlessPath:{
-        path:[/\/api/]
+        path:[/\/api/,/.png$/,/.jpg$/]
         // path:[/change$/,/send$/,/login$/,/register$/,/.png$/,/.jpg$/]
     }
 }
