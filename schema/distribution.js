@@ -16,6 +16,10 @@ const distributionSchema = new Schema({
         type: Array,
         required:true
     },
+    ration:{
+        type:Number,
+        required:true
+    },
     status:{
         type:Number,
         default: 0

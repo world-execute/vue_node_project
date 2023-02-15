@@ -15,7 +15,7 @@ const getQuota = (req,res) => {
         filter.id = req.query.id
     }
     if(req.query.is_accept){
-        filter.is_accept = req.query.is_accept === 'true'
+        filter.is_accept = req.query.is_accept
     }
     const sortInfo = {}
     if(req.query.sort){

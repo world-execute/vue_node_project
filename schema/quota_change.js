@@ -11,6 +11,10 @@ const quota_changesSchema = new Schema({
         type: String,
         required: true,
     },
+    new_ration:{
+        type:Number,
+        required: true
+    },
     is_accept:{
         type:Boolean,
         default:false

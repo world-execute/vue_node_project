@@ -28,6 +28,7 @@ const checkName = {
 const changeDist = {
     body:{
         user_id:field.user_id,
+        supplies_id:field.supplies_id,
         supplies_names:field.supplies_names,
         supplies_quantities:field.supplies_quantities
     }
@@ -66,7 +67,15 @@ const changeEmployee = {
 const createQuota = {
     body:{
         user_id:field.user_id,
-        reason:field.reason
+        reason:field.reason,
+        new_ration:field.new_ration
+    }
+}
+
+const createCollectMaterial = {
+    body:{
+        user_id:field.user_id,
+        material_id:field.material_id
     }
 }
 
@@ -79,5 +88,6 @@ module.exports = joiSchema = {
     checkCode,
     changeEmployee,
     createQuota,
-    changePwd
+    changePwd,
+    createCollectMaterial
 }

@@ -22,6 +22,7 @@ const chargeUnitRouter = require('./router/chargeUnitRouter')
 const notFoundRouter = require('./router/notFoundRouter')
 const employeeRouter = require('./router/employeeRouter')
 const quotaChangeRouter = require('./router/quotaChangeRouter')
+const collectMaterialRouter = require('./router/collectMaterialRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -35,7 +36,7 @@ app.use(expressjwt({secret:jwtConfig.secret,algorithms:['HS256']}).unless(jwtCon
 app.use(express.static('public'))
 
 // 连接MongoDB数据库
-console.log('-----------------------'+color('blueBG','[system info]')+'-------------------------------');
+console.log('--------------------'+color('blueBG','[system info]')+'----------------------------');
 const url = `mongodb://${db_info.host}:${db_info.port}/${db_info.db}`
 mongoose.connect(url).then(() => {
     console.log(color('green','[databases]'),color('blue','mongodb is connection'))
@@ -59,6 +60,7 @@ app.use((req,res,next) => {
     }
     next()
 })
+
 // 控制台输出调试
 app.use((req,res,next) => {
     console.log('-----------------------'+color('greenBG','[debug]')+'-------------------------------');
@@ -82,6 +84,7 @@ app.use('/api/lost-pwd',lostPwdRouter)
 app.use('/api/charge-unit',chargeUnitRouter)
 app.use('/api/employee',employeeRouter)
 app.use('/api/quota-change',quotaChangeRouter)
+app.use('/api/collect-material',collectMaterialRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {
@@ -116,7 +119,7 @@ app.use(notFoundRouter)
 // 测试入口
 // test()
 
-
+// 启动服务,监听端口
 app.listen(port,()=>{
     console.log(color('green','[server]'),color('blue','server is running,')+`base url: http://localhost:${port}`)
 })

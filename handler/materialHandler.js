@@ -24,9 +24,10 @@ const postMater = (req,res) => {
 }
 
 const getMater = (req,res) => {
-    const keyWord = req.query.search?req.body.search:''
+    const keyWord = req.query.search?req.query.search:''
     const checkThreshold = req.query.lower?"this.quantity < this.threshold":'true'
     const sort_info = {}
+    console.log(req.query.search);
     if(req.query.sort){
         sort_info.change_time = req.query.sort === 'new'?-1:1
     }
@@ -37,7 +38,7 @@ const getMater = (req,res) => {
     if(req.query.type){
         filter.type = req.query.type
     }
-    materialModule.countDocuments().then(count => {
+    materialModule.count(filter).then(count => {
         materialModule.find(filter)
             .populate({
                 path:'type',
