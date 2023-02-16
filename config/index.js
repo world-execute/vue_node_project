@@ -14,8 +14,8 @@ const jwtConfig = {
     }
 }
 const client = {
-    id:'d8ea72313fa64a29b2de00ce93190b90',
-    secret: '3a4ebab1805d49dabe40e8fc51215560'
+    id:'C72636565',
+    secret: 'a06bdc1f7182761b57cd69b96a4a401d'
 }
 
 module.exports ={

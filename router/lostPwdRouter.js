@@ -12,21 +12,36 @@ lostPwdRouter.post('/send',joiExpress(joiSchema.sendCode),((req, res) => {
         if(result.length === 0){
             return res.out('没有用户使用这个号码',404)
         }
-        axios.post('https://www.onlyid.net/api/open/send-otp',{
-            recipient:req.body.recipient,
-            clientId:client.id,
-            clientSecret:client.secret
+        // 验证码
+        const code = Math.floor(Math.random() * (9999 - 1111) ) + 1111
+        // 短信验证码模板
+        const content = `您的验证码是：${code}。请不要把验证码泄露给其他人。`
+        axios.get('https://106.ihuyi.com/webservice/sms.php',{
+            params:{
+                method:'Submit',
+                account:client.id,
+                password:client.secret,
+                mobile:req.body.recipient,
+                content,
+                format:'json'
+            }
         }).then(({data}) => {
-            verificationModule({
-                user_id:result[0]._id,
-                recipient:data.recipient,
-                code:data.code
-            }).save().catch(err => {
-                return res.out('验证码存储失败',400,err)
-            })
-            return res.out('验证码发送成功',200,{recipient:data.recipient})
+            if(data.code === 2){
+                verificationModule({
+                    user_id:result[0]._id,
+                    recipient:req.body.recipient,
+                    code
+                }).save().then(value => {
+                    return res.out('验证码发送成功',200)
+                }).catch(err => {
+                    return res.out('验证码存储失败',400,err)
+                })
+            }
+            else {
+                return res.out('验证码发送失败',400,data.msg)
+            }
         }).catch(reason => {
-            return res.out('验证码发送失败',200,{error:reason.error})
+            return res.out('验证码发送失败',400,{error:reason.error})
         })
     })
 }))
