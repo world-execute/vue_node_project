@@ -79,6 +79,19 @@ const createCollectMaterial = {
     }
 }
 
+const createAddressInfo = {
+    body:{
+        name:field.name,
+        level:field.level,
+        number:field.number
+    }
+}
+
+const needId = {
+    query:{
+        id:field.id
+    }
+}
 module.exports = joiSchema = {
     forLoginOrRegister,
     changeMater,
@@ -89,5 +102,7 @@ module.exports = joiSchema = {
     changeEmployee,
     createQuota,
     changePwd,
-    createCollectMaterial
+    createCollectMaterial,
+    needId,
+    createAddressInfo
 }

@@ -23,6 +23,8 @@ const notFoundRouter = require('./router/notFoundRouter')
 const employeeRouter = require('./router/employeeRouter')
 const quotaChangeRouter = require('./router/quotaChangeRouter')
 const collectMaterialRouter = require('./router/collectMaterialRouter')
+const addressRouter = require('./router/addressRouter')
+const addressInfoRouter = require('./router/addressInfoRouter')
 
 // 处理跨域请求
 app.use(cors())
@@ -85,6 +87,8 @@ app.use('/api/charge-unit',chargeUnitRouter)
 app.use('/api/employee',employeeRouter)
 app.use('/api/quota-change',quotaChangeRouter)
 app.use('/api/collect-material',collectMaterialRouter)
+app.use('/api/address',addressRouter)
+app.use('/api/address/info',addressInfoRouter)
 
 // 错误处理中间件
 app.use((err,req,res,next) => {

@@ -1,12 +1,13 @@
 const express =require('express')
 const userModule = require('../schema/user')
+const employeeModule = require('../schema/employee')
 const joiExpress = require('@escook/express-joi')
 const joiSchema = require('../validation')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const loginRouter = express.Router()
 const {jwtConfig} = require('../config')
-loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
+loginRouter.post('/user',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
     const body = {...req.body}
     userModule.findOne({username:body.username}).then(result =>{
         if(result === null || result.is_delete === true){
@@ -27,6 +28,16 @@ loginRouter.post('/',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
         res.out('密码错误',403)
     }).catch(err => {
         res.out('获取用户失败',400,err)
+    })
+})
+
+loginRouter.post('/employ',joiExpress(joiSchema.forLoginOrRegister),(req,res) => {
+    const body = {...req.body}
+    employeeModule.findOne({username:body.username}).then(result => {
+        if(result === null){
+            return res.out('员工账号不存在',404)
+        }
+         
     })
 })
 

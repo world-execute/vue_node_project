@@ -15,8 +15,8 @@ const userSchema = new Schema({
         default:''
     },
     address:{
-        type:String,
-        default:''
+        type:Schema.Types.ObjectId,
+        ref:'addresses'
     },
     phone:{
         type:String,

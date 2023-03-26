@@ -45,7 +45,8 @@ const getUser = (req,res) => {
         filter.username = req.query.username
     }
     userModule.countDocuments().then(count => {
-        userModule.find(filter).select('-password').skip(req.skipNumber).limit(req.limitNumber).then(async result => {
+        userModule.find(filter).select('-password').skip(req.skipNumber).limit(req.limitNumber)
+            .populate({path:'address'}).then(result => {
             res.out('获取用户成功',200,{result,total:count})
         }).catch(err => {
             res.out('获取用户信息失败',400,err)

@@ -27,5 +27,7 @@ fields.employee_id = joi.string().required().messages(getErrMessage('员工id'))
 fields.charge_unit = joi.string().required().messages(getErrMessage('计价单位'))
 fields.new_ration = joi.number().required().messages(getErrMessage('新配额'))
 fields.material_id = joi.string().required().messages(getErrMessage('物资id'))
+fields.level = joi.number().required().messages(getErrMessage('级别'))
+fields.number = joi.number().required().messages(getErrMessage('数量'))
 
 module.exports = fields

@@ -32,7 +32,7 @@ lostPwdRouter.post('/send',joiExpress(joiSchema.sendCode),((req, res) => {
                     recipient:req.body.recipient,
                     code
                 }).save().then(value => {
-                    return res.out('验证码发送成功',200)
+                    return res.out('验证码发送成功',200,value)
                 }).catch(err => {
                     return res.out('验证码存储失败',400,err)
                 })
